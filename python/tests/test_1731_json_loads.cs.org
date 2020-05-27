@@ -1,0 +1,34 @@
+* 1 a_string:
+
+
+
+{
+ "resultCount":25,
+ "results": [
+{"wrapperType":"track", "kind":"podcast", "collectionId":10892}]}
+:a_string
+* 2 type: Newtonsoft.Json.Linq.JObject
+* 3 d: {
+  "resultCount": 25,
+  "results": [
+    {
+      "wrapperType": "track",
+      "kind": "podcast",
+      "collectionId": 10892
+    }
+  ]
+}
+* 4 "resultCount": 25
+* 4 "results": [
+  {
+    "wrapperType": "track",
+    "kind": "podcast",
+    "collectionId": 10892
+  }
+]
+* 5 0 -> {
+  "wrapperType": "track",
+  "kind": "podcast",
+  "collectionId": 10892
+}
+* 6 resultCount: 25

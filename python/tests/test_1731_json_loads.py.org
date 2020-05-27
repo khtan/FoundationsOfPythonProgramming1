@@ -1,0 +1,15 @@
+* INFO     test_ch17_nested:test_ch17_nested.py:33 1 a_string:
+
+
+
+{
+ "resultCount":25,
+ "results": [
+{"wrapperType":"track", "kind":"podcast", "collectionId":10892}]}
+:a_string
+* INFO     test_ch17_nested:test_ch17_nested.py:37 2 type: <class 'dict'>
+* INFO     test_ch17_nested:test_ch17_nested.py:40 3 d: dict_keys(['resultCount', 'results'])
+* INFO     test_ch17_nested:test_ch17_nested.py:43 4 resultCount
+* INFO     test_ch17_nested:test_ch17_nested.py:43 4 results
+* INFO     test_ch17_nested:test_ch17_nested.py:46 5 0 -> {'wrapperType': 'track', 'kind': 'podcast', 'collectionId': 10892}
+* INFO     test_ch17_nested:test_ch17_nested.py:48 6 resultCount = 25
