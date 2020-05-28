@@ -7,7 +7,8 @@ import io
 import math
 # from point import Point # this avoids having to use point.Point everywhere else
 # from tests.point import Point # VS Code can find file but test discovery does not
-from pretty import pretty # first try using this module, C# -- SmartFormat
+# 05/27/2020 Ubuntu fails to parse pretty.py at line 165
+# from pretty import pretty # first try using this module, C# -- SmartFormat
 
 ''' Notes
 1. If place point.py in FoundationsOfPythonProgramming/python, VS Code cannot find the file.
@@ -29,8 +30,8 @@ class Point:
     def __str__(self):
         return "<{},{}>".format(self.x, self.y)
 
-    def __pretty__(self, p, cycle):
-        p.pretty("<{},{}>".format(self.x, self.y))
+#    def __pretty__(self, p, cycle):
+#        p.pretty("<{},{}>".format(self.x, self.y))
 
     def getX(self): return self.x
     def getY(self): return self.y
@@ -99,8 +100,8 @@ def test_2091_sort_pattern():
     lst = [Point(1,5), Point(2,4), Point(3,3), Point(4,2), Point(5,1)]
     sortByX = sorted(lst, key=lambda p: p.getX())
     sortByY = sorted(lst, key=lambda p: p.getY())
-    logger.info(pretty(sortByX))
-    logger.info(pretty(sortByY))
+#    logger.info(pretty(sortByX))
+#    logger.info(pretty(sortByY))
     # assert the 2 ends are the same
     assert sortByX[0] == sortByY[-1]
     assert sortByX[-1] == sortByY[0]
