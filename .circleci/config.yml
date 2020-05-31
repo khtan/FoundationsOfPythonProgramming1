@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: pip install --user pytest requests
+          command: pip install --user pytest pytest-mock requests
           name: Install Pytest
       - run:
           command: ./manage.py test
