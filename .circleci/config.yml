@@ -19,7 +19,9 @@ jobs:
             mkdir pytest-results
             pytest tests --junitxml=pytest_results/junit.xml
       - store_test_results:
-           path : python/pytest-results
+           working_directory: python
+           path : pytest-results
       - store_artifacts:
-           path : python/pytest-results
+           working_directory: python
+           path : pytest-results
 
