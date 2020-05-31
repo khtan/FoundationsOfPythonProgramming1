@@ -11,5 +11,8 @@ jobs:
           name: Install Pytest
       - run:
           command: ./manage.py test
-          name: Test
+          name: Check Pytest
+      - run:
+          command: pytest python/tests
+          name: Run unit tests
 
