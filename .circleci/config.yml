@@ -7,15 +7,19 @@ jobs:
     steps:
       - checkout
       - run:
-          command: pip install --user pytest pytest-mock requests
           name: Install Pytest
+          command: pip install --user pytest pytest-mock requests
       - run:
-          command: ./manage.py test
           name: Check Pytest
+          command: ./manage.py test
+      - run:
+          name: Run unit tests
+          working_directory: python
+          command: |
+            mkdir pytest-results
+            pytest tests --junitxml=pytest_results/junit.xml
       - store_test_results:
            path : python/pytest-results
-      - run:
-          command: pytest tests
-          working_directory: python
-          name: Run unit tests
+      - store_artifacts:
+           path : python/pytest-results
 
