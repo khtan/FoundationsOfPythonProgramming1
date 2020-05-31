@@ -13,6 +13,7 @@ jobs:
           command: ./manage.py test
           name: Check Pytest
       - run:
-          command: pytest python/tests
+          command: pytest tests
+          working_directory: python
           name: Run unit tests
 
