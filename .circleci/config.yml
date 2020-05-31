@@ -17,7 +17,7 @@ jobs:
           working_directory: python
           command: |
             mkdir pytest-results
-            pytest tests --junitxml=pytest_results/junit.xml
+            pytest tests --junitxml=pytest-results/junit.xml
       - store_test_results:
            path : python/pytest-results
       - store_artifacts:
