@@ -6,9 +6,9 @@ jobs:
       - image: cimg/python:3.8
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
+      - run:
+          command: pip install --user pytest
+          name: Install Pytest
       - run:
           command: ./manage.py test
           name: Test
