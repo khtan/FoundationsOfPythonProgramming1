@@ -1,0 +1,25 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.8
+    steps:
+      - checkout
+      - run:
+          name: Install Pytest
+          command: pip install --user pytest pytest-mock requests
+      - run:
+          name: Check Pytest
+          command: ./manage.py test
+      - run:
+          name: Run unit tests
+          working_directory: python
+          command: |
+            mkdir pytest-results
+            pytest tests --junitxml=pytest-results/junit.xml
+      - store_test_results:
+           path : python/pytest-results
+      - store_artifacts:
+           path : python/pytest-results
+

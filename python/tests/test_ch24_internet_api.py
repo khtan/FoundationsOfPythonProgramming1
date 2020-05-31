@@ -99,7 +99,7 @@ def test_2411_itunes(): # 24.11
     parameters={"term":"Ann Arbor", "entity":"podcast"}
     response = requests.get(baseurl, params=parameters)
     py_data = json.loads(response.text)
-    assert 34 == len(py_data['results'])
+    # assert 34 == len(py_data['results']) # unreliable and changes
     # for visual check
     for r in py_data['results']:
         logger.info(r['trackName'])
