@@ -39,6 +39,8 @@ jobs:
           command: |
             mkdir csharp-results
             dotnet.exe test -v n -r csharp-results
+      - store_test_results:
+           path : csharp/csharp-results
 
 workflows: # run windows before linux sequentially
   version: 2.1
