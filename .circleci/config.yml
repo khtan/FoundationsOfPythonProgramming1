@@ -53,7 +53,7 @@ jobs:
     <<: *test_dotnet
 workflows: # run jobs sequentially
   version: 2.1
-  build_all_platforms:
+  test_all_platforms:
      jobs:
        - test_linux_dotnet
        - test_windows_dotnet:
