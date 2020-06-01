@@ -1,7 +1,8 @@
 version: 2.1
-
+orbs:
+   win: circleci/windows@2.2.0
 jobs:
-  build:
+  buildtest_linux:
     docker:
       - image: cimg/python:3.8
     steps:
@@ -13,7 +14,7 @@ jobs:
           name: Check Pytest
           command: ./manage.py test
       - run:
-          name: Run unit tests
+          name: Run Pytest unit tests
           working_directory: python
           command: |
             mkdir pytest-results
@@ -22,4 +23,29 @@ jobs:
            path : python/pytest-results
       - store_artifacts:
            path : python/pytest-results
+  buildtest_windows:
+    executor:
+        name: win/vs2019
+        shell: bash.exe
+    steps:
+      - checkout
+      - run:
+          name : Install project dependencies
+          working_directory: csharp
+          command: dotnet.exe restore
+      - run:
+          name : Run Xunit unit tests
+          working_directory: csharp
+          command: |
+            mkdir csharp-results
+            dotnet.exe test -v n -r csharp-results
+
+workflows: # run windows before linux sequentially
+  version: 2.1
+  build_all_platforms:
+     jobs:
+       - buildtest_windows
+       - buildtest_linux:
+           requires:
+             - buildtest_windows
 
