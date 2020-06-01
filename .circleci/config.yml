@@ -2,7 +2,7 @@ version: 2.1
 orbs:
    win: circleci/windows@2.2.0
 jobs:
-  buildtest_linux:
+  test_linux:
     docker:
       - image: cimg/python:3.8
     steps:
@@ -23,7 +23,7 @@ jobs:
            path : python/pytest-results
       - store_artifacts:
            path : python/pytest-results
-  buildtest_windows:
+  test_windows:
     executor:
         name: win/default
         shell: bash.exe
@@ -46,8 +46,8 @@ workflows: # run windows before linux sequentially
   version: 2.1
   build_all_platforms:
      jobs:
-       - buildtest_windows
-       - buildtest_linux:
+       - test_windows
+       - test_linux:
            requires:
-             - buildtest_windows
+             - test_windows
 
