@@ -11,6 +11,8 @@ Debug/
 Release/
 TestResults/
 packages/
+obj/
+csharp-results/
 
 # --------------------------------------------------
 # elisp .gitignore

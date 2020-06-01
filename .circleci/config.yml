@@ -37,7 +37,7 @@ jobs:
           name : Run Xunit unit tests
           working_directory: csharp
           command: |
-            dotnet.exe test -v n --logger "junit;LogFilePath=csharp-results/csharp-unit-test.xml"
+            dotnet.exe test XUnitTests/XUnitTests.csproj -v n --logger "junit;LogFilePath=csharp-results/csharp-unit-test.xml"
       - store_test_results:
            path : csharp/XUnitTests/csharp-results
 
