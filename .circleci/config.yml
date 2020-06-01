@@ -1,3 +1,22 @@
+# reusable steps
+test_dotnet: &test_dotnet
+    steps:
+      - checkout
+      - run:
+          name : Install project dependencies
+          working_directory: csharp
+          command: dotnet restore
+      - run:
+          name : Run CSharp unit tests
+          working_directory: csharp
+          # XunitTests/csharp-results, JUnitTests/csharp-results, JUnitTestProject1/csharp-results
+          command:
+            dotnet test -v n --logger "junit;LogFilePath=csharp-results/csharp-unit-test.xml"
+      - store_test_results:
+           path : csharp
+# -----------
+# config file
+# -----------
 version: 2.1
 orbs:
    win: circleci/windows@2.2.0
@@ -26,40 +45,13 @@ jobs:
   test_linux_dotnet:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk
-    steps:
-      - checkout
-      - run:
-          name : Install project dependencies
-          working_directory: csharp
-          command: dotnet restore
-      - run:
-          name : Run CSharp unit tests
-          working_directory: csharp
-          # XunitTests/csharp-results, JUnitTests/csharp-results, JUnitTestProject1/csharp-results
-          command:
-            dotnet test -v n --logger "junit;LogFilePath=csharp-results/csharp-unit-test.xml"
-      - store_test_results:
-           path : csharp
+    <<: *test_dotnet
   test_windows_dotnet:
     executor:
         name: win/default
         shell: bash.exe
-    steps:
-      - checkout
-      - run:
-          name : Install project dependencies
-          working_directory: csharp
-          command: dotnet.exe restore
-      - run:
-          name : Run CSharp unit tests
-          working_directory: csharp
-          # XunitTests/csharp-results, JUnitTests/csharp-results, JUnitTestProject1/csharp-results
-          command:
-            dotnet.exe test -v n --logger "junit;LogFilePath=csharp-results/csharp-unit-test.xml"
-      - store_test_results:
-           path : csharp
-
-workflows: # run windows before linux sequentially
+    <<: *test_dotnet
+workflows: # run jobs sequentially
   version: 2.1
   build_all_platforms:
      jobs:
