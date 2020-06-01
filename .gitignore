@@ -11,6 +11,7 @@ Debug/
 Release/
 TestResults/
 packages/
+bin/
 obj/
 csharp-results/
 
