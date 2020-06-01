@@ -38,7 +38,7 @@ jobs:
           working_directory: csharp
           command: |
             mkdir csharp-results
-            dotnet.exe test -v n -r csharp-results
+            dotnet.exe test -v n -r csharp-results -xml csharp-results/csharp-unit-test.xml
       - store_test_results:
            path : csharp/csharp-results
 
