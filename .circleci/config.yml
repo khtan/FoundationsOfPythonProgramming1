@@ -30,10 +30,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name : Install JUnitTestLogger
-          working_directory: csharp
-          command: dotnet.exe add package JUnitTestLogger
-      - run:
           name : Install project dependencies
           working_directory: csharp
           command: dotnet.exe restore
@@ -41,10 +37,9 @@ jobs:
           name : Run Xunit unit tests
           working_directory: csharp
           command: |
-            mkdir csharp-results
             dotnet.exe test -v n --logger "junit;LogFilePath=csharp-results/csharp-unit-test.xml"
       - store_test_results:
-           path : csharp/csharp-results
+           path : csharp/XUnitTests/csharp-results
 
 workflows: # run windows before linux sequentially
   version: 2.1
