@@ -25,7 +25,7 @@ jobs:
            path : python/pytest-results
   buildtest_windows:
     executor:
-        name: win/vs2019
+        name: win/default
         shell: bash.exe
     steps:
       - checkout
