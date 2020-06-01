@@ -31,13 +31,13 @@ jobs:
       - run:
           name : Install project dependencies
           working_directory: csharp
-          command: dotnet.exe restore
+          command: dotnet restore
       - run:
           name : Run CSharp unit tests
           working_directory: csharp
           # XunitTests/csharp-results, JUnitTests/csharp-results, JUnitTestProject1/csharp-results
           command:
-            dotnet.exe test -v n --logger "junit;LogFilePath=csharp-results/csharp-unit-test.xml"
+            dotnet test -v n --logger "junit;LogFilePath=csharp-results/csharp-unit-test.xml"
       - store_test_results:
            path : csharp
   test_windows_dotnet:
