@@ -1,0 +1,128 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>kwee.learn</groupId>
+    <artifactId>java8-junit4-quickstart</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>java8-junit4-quickstart</name>
+    <description>Add project description here</description>
+
+    <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <hamcrest.version>2.1</hamcrest.version>
+      <jackson.version>2.10.2</jackson.version>
+      <rest-assured.version>4.3.0</rest-assured.version>
+      <junit.jupiter.version>5.5.2</junit.jupiter.version>
+      <junit.platform.version>1.5.2</junit.platform.version>
+      <junit.version>4.12</junit.version>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest</artifactId>
+          <version>${hamcrest.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>  
+          <version>${jackson.version}</version>
+        </dependency>
+        <dependency><!-- rest-assured, before junit -->
+          <groupId>io.rest-assured</groupId>
+          <artifactId>rest-assured</artifactId>
+          <version>${rest-assured.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency><!-- junit-jupiter-engine -->
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-engine</artifactId>
+          <version>${junit.jupiter.version}</version>
+        </dependency>
+        <dependency><!-- junit-platform-runner-->
+          <groupId>org.junit.platform</groupId>
+          <artifactId>junit-platform-runner</artifactId>
+          <version>${junit.platform.version}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency><!-- junit -->
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <release>11</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <version>2.19</version>
+              <dependencies>
+                <dependency>
+                  <groupId>org.junit.platform</groupId>
+                  <artifactId>junit-platform-surefire-provider</artifactId>
+                  <version>1.0.0-M4</version>
+                </dependency>
+                <dependency>
+                  <groupId>org.junit.vintage</groupId>
+                  <artifactId>junit-vintage-engine</artifactId>
+                  <version>5.1.0</version>
+                </dependency>
+              </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.9</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+            </plugin>
+        </plugins>
+    </reporting>
+</project>
