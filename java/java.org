@@ -6,7 +6,7 @@
 #+PROPERTY: urg_ALL immediate shortterm longterm
 #+PROPERTY: loc_ALL home office
 #+COLUMNS: %imp %urg %loc
-* c:\cprojects\github\circleci\FoundationsOfPythonProgramming1\java>mvn test
+* DONE c:\cprojects\github\circleci\FoundationsOfPythonProgramming1\java>mvn test
 mvn test
 [INFO] Scanning for projects...
 [INFO] 
