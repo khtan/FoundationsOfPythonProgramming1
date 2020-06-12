@@ -31,8 +31,7 @@ Fortunately, a software environment based on GitHub and CircleCi would able to f
 The current preponderance of Linux Docker machines is due to the fact that Windows Docker is not yet available in
 CircleCi. There is a noticeable execution time increase when using a Windows VM vs a Docker file. When CircleCi makes Windows Docker available, I will update my testing suite.
 
-The IDEs listed are what I use in my development as examples. Since they are just source repositories, any environment
-will do, so long as you know how to set things up. 
+The IDEs listed are what I use in my development as examples. Since they are just source repositories, any IDE will do, so long as you know how to set things up. 
 
   | Language | CircleCi     | Unit Testing Framework | IDE               |
   |----------|--------------|------------------------|-------------------|
