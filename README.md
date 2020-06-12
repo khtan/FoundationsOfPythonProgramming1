@@ -26,15 +26,20 @@ A final problem I wanted to deal with is that many times, when I pick up an old 
 the source code in version control, and equally important, I needed some continuous integration system so that whenever I make updates, I would know that the code still work on both Linux and Windows.
 
 # Open Implementation
-Fortunately, a software environment based on GitHub and CircleCi would able to form the basis of a viable solution. This repo would consist of several folders, one for each language, with Python as my first language. This allows me to clone the repository on any platform I wish and pick up from there, complete with the version history of all my changes. As I work on one machine, the CircleCi will run regressions on both Linux and Windows. Below is a table that maps the language to what platforms the tests are running on CircleCi.
+Fortunately, a software environment based on GitHub and CircleCi would able to form the basis of a viable solution. This repo would consist of several folders, one for each language, with Python as my first language. This allows me to clone the repository on any platform I wish and pick up from there, complete with the version history of all my changes. As I work on one machine, the CircleCi will run regressions on both Linux and Windows. Below is a table that shows my current progress. It details which language maps to what platforms the tests are running on CircleCi.
 
+The current preponderance of Linux Docker machines is due to the fact that Windows Docker is not yet available in
+CircleCi. There is a noticeable execution time increase when using a Windows VM vs a Docker file. When CircleCi makes Windows Docker available, I will update my testing suite.
 
-  | Language | CircleCi | Unit Testing Framework | IDE               |
-  |----------|----------|------------------------|-------------------|
-  | Python   | Linux    | Pytest                 | VS Code           |
-  | C#       | Linux    | XUnit                  | VS 2019 Community |
-  | C#       | Windows  | XUnit                  |                   |
-  | Java     | TBD      | Junit4/5               | VS Code, IntelliJ |
+The IDEs listed are what I use in my development as examples. Since they are just source repositories, any environment
+will do, so long as you know how to set things up. 
+
+  | Language | CircleCi     | Unit Testing Framework | IDE               |
+  |----------|--------------|------------------------|-------------------|
+  | Python   | Linux Docker | Pytest                 | VS Code           |
+  | C#       | Linux Docker | XUnit, dotnet          | VS Code           |
+  | C#       | Windows VM   | XUnit, dotnet          | VS 2019 Community |
+  | Java     | Linux Docker | Junit4/5 on Maven      | VS Code, IntelliJ |
 
 # Best Practices
 ## Pedagogical emphasis
