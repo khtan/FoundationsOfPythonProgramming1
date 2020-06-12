@@ -24,12 +24,8 @@ jobs:
   test_linux_java:
     docker:
       - image: circleci/openjdk:jdk-stretch # cimg not yet available
-    steps:
+    steps: # mvn is in /opt/apache-maven/bin/mvn, current version 3.6.0
       - checkout
-      - run:
-          which mvn
-      - run:
-          mvn --version
       - run:
           name: Install Java dependencies
           working_directory: java
