@@ -27,6 +27,10 @@ jobs:
     steps:
       - checkout
       - run:
+          which mvn
+      - run:
+          mvn --version
+      - run:
           name: Install Java dependencies
           working_directory: java
           command: mvn dependency:go-offline
