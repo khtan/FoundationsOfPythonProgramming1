@@ -23,7 +23,7 @@ orbs:
 jobs:
   test_linux_java:
     docker:
-      - image: circleci/openjdk:8-jdk-stretch # cimg not yet available
+      - image: circleci/openjdk:jdk-stretch # cimg not yet available
     steps:
       - checkout
       - run:
