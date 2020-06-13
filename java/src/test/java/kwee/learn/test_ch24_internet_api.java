@@ -23,7 +23,20 @@ import static org.hamcrest.Matchers.equalTo;
    https://stackoverflow.com/questions/730283/does-java-have-a-complete-enum-for-http-response-codes
    4. restassured has its own JsonPath builtin, so no need to use Jayway's JsonPath in github.com/json-path/JsonPath
 */
-
+class PhotoItem{
+    public Integer id;
+    public Integer owner;
+    public Integer secret;
+    public Integer server;
+    public Integer farm;
+    public String title;
+    public Boolean ispublic;
+    public Boolean isfriend;
+    public Boolean isfamily;
+    public PhotoItem(Integer i, Integer o, Integer sec, Integer ser, Integer f, String t, Boolean isp, Boolean isf, Boolean isfam){
+        id = i; owner = o; secret = sec; server=ser; farm = f; title = t; ispublic = isp; isfriend = isf; isfamily = isfam;
+    }
+}
 class RhymeItem { // single line because plain data type
     public String word;
     public Integer score;
@@ -33,7 +46,7 @@ class RhymeItem { // single line because plain data type
 
 public class test_ch24_internet_api {
     private Logger logger;
-
+    private String flickr_key = "464b86270211da70af8a940c0ed6c219";
     @BeforeEach
     public void setUp(){
        logger = Logger.getLogger(test_ch24_internet_api.class.getName());
@@ -85,7 +98,7 @@ public class test_ch24_internet_api {
         logger.info(String.format("lstring,size() = %d", words.size()));
         assertEquals(84, words.size());
         // get generic List<Object>
-        var items = r1.as(new TypeRef<List<Object>>(){});
+        var items = r1.as(new TypeRef<List<RhymeItem>>(){});
         logger.info(String.format("lo,size() = %d", items.size())); 
         assertEquals(84, items.size());
     }
@@ -106,6 +119,28 @@ public class test_ch24_internet_api {
         then().
             statusCode(200);
     }
+    List<String> get_rhymes(String word){
+        String ROOT_URI = "https://api.datamuse.com";
+        ResponseBody<?> rb = given().
+           log().all().
+           param("rel_rhy", word).
+           param("max", 3).
+        when().
+           get(ROOT_URI + "/words").
+        then().
+           statusCode(200)
+           .extract().
+           response()
+           .body();
+
+        return rb.jsonPath().getList("word");
+    }
+    @Test
+    public void test_2482_test_get_rhymes(){
+        List<String> rhymes = get_rhymes("funny");
+        List<String> erhymes = List.of("money", "honey", "sunny");
+        assertEquals(erhymes, rhymes);
+    }
     @Test
     public void test_2411_itunes(){
         String baseurl = "https://itunes.apple.com/search";
@@ -122,6 +157,40 @@ public class test_ch24_internet_api {
         for( String track : tracks){
             logger.info(track.toString());
         }
+    }
+    Response get_flickr_data(String tags_string){
+        String baseurl = "http://api.flickr.com/services/rest";
+        Response r = given().
+           log().all().
+           param("api_key", flickr_key).
+           param("tags", tags_string).
+           param("tag_mode", "all").
+           param("method", "flickr.photos.search").
+           param("per_page", 5).
+           param("media", "photos").
+           param("format","json").
+           param("nojsoncallback", 1).
+           when().
+              get(baseurl);
+           /*   
+           then().
+              statusCode(200).extract().response().body();
+              */
+        return r;
+    }
+    @Test
+    public void test_2412_flickr(){
+        ResponseBody<?> r1 = get_flickr_data("river,mountains").then().statusCode(200).extract().response().body();
+        JsonPath result_river_mts = r1.jsonPath();
+        List<Object> photos = result_river_mts.getList("photos.photo");        
+        assertEquals(5, photos.size());
+
+        // visual use only
+        for (Object photo : photos){
+            PhotoItem x = JsonPath.from(photo.toString()).getObject("$", PhotoItem.class);
+            logger.info(x.toString());
+        }
+
     }
 //#endregion chapter 24 tests    
 }

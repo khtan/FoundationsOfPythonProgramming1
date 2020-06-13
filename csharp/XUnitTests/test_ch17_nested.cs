@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using Xunit;
 using Xunit.Abstractions;
 using FluentAssertions;
-using System.Collections.Generic;
 
 /* Notes
 1. Two JSON libraries, Json.net and ?
