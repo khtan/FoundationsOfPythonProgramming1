@@ -3,15 +3,14 @@ package kwee.learn;
 import java.util.logging.Logger;
 import java.util.List;
 import java.util.Map;
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 // static imports
 import static io.restassured.path.json.JsonPath.with;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 /*
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
@@ -104,18 +103,18 @@ public class test_ch17_jsonpath {
         // Using get with container mapping
         List<Map<String, String>> books = with(storeJson).get("store.book.findAll {book -> book.price >=5 && book.price <=15 }");
         assertEquals(3, books.size());
-        
+
         // visual only
-        List<String> authors = new ArrayList<String>();        
+        List<String> authors = new ArrayList<String>();
         for(Map<String, String> book: books){
             logger.info("----- Book -----");
             for (Map.Entry<String, String> entry : book.entrySet()){
                 String key = entry.getKey();
                 if("author".equals(key)){ // warning "author" == key does not work, bec in Java, it compares the references, not content
-                    String value = entry.getValue();                    
+                    String value = entry.getValue();
                     authors.add(value);
                 }
-                logger.info(String.format("\t%s -> %s", key, entry.getValue()));            
+                logger.info(String.format("\t%s -> %s", key, entry.getValue()));
             }
         }
         List<String> expectedAuthors = List.of("Nigel Rees","Evelyn Waugh", "Herman Melville");
@@ -126,7 +125,7 @@ public class test_ch17_jsonpath {
     public void test_0005_allBooks() {
         // Using get with class mapping
         List<BookItem> books = with(storeJson).getList("store.book", BookItem.class);
-        
+
         // visual only
         List<String> titles = new ArrayList<String>();
         for(BookItem book: books){
@@ -136,5 +135,29 @@ public class test_ch17_jsonpath {
         List<String> expectedTitles = List.of("Sayings of the Century", "Sword of Honour", "Moby Dick", "The Lord of the Rings");
         assertEquals(expectedTitles, titles);
     }// test
+    @Test
+    public void test_0000_listof_compiles_with_add(){
+        // This is a general regression with Java implementing the generic collections as
+        // interfaces. The strength of OOP is compiler checking but here ???
+        //
+        // 1. Cannot instantiate the type List<String> bec it is an interface
+        // List<String> list = new List<String>();
+
+        List<String> list = List.of();
+        assertThrows(UnsupportedOperationException.class, 
+        () -> { // 2. Compiler did not catch that list is immutable
+            list.add("hello");
+        });
+    }
+    @Test
+    public void XXX(){
+        // bookJson is an Object document, not Json, unless = is changed to :
+        String bookJson = "{\"id\"=\"50006251707\", \"owner\"=\"42905214@N08\", \"secret\"=\"e7c0720260\", \"server\"=\"65535\", \"farm\"=\"66\", \"title\"=\"Another Stillaguamish River Landscape\", \"ispublic\"=\"1\", \"isfriend\"=\"0\", \"isfamily\"=\"0\"}";
+        logger.info(String.format("bookJson=%s", bookJson));
+/*
+        String title = with(bookJson).get("title");
+        logger.info(String.format("t: %s", title));
+        */
+    }
     // #endregion tests
 }

@@ -11,6 +11,7 @@ import io.restassured.path.json.JsonPath;
 
 // static imports
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static io.restassured.path.json.JsonPath.with;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -24,18 +25,15 @@ import static org.hamcrest.Matchers.equalTo;
    4. restassured has its own JsonPath builtin, so no need to use Jayway's JsonPath in github.com/json-path/JsonPath
 */
 class PhotoItem{
-    public Integer id;
-    public Integer owner;
-    public Integer secret;
-    public Integer server;
-    public Integer farm;
+    public String id;
+    public String owner;
+    public String secret;
+    public String server;
+    public String farm;
     public String title;
-    public Boolean ispublic;
-    public Boolean isfriend;
-    public Boolean isfamily;
-    public PhotoItem(Integer i, Integer o, Integer sec, Integer ser, Integer f, String t, Boolean isp, Boolean isf, Boolean isfam){
-        id = i; owner = o; secret = sec; server=ser; farm = f; title = t; ispublic = isp; isfriend = isf; isfamily = isfam;
-    }
+    public String ispublic;
+    public String isfriend;
+    public String isfamily;
 }
 class RhymeItem { // single line because plain data type
     public String word;
@@ -182,15 +180,29 @@ public class test_ch24_internet_api {
     public void test_2412_flickr(){
         ResponseBody<?> r1 = get_flickr_data("river,mountains").then().statusCode(200).extract().response().body();
         JsonPath result_river_mts = r1.jsonPath();
-        List<Object> photos = result_river_mts.getList("photos.photo");        
+        // List<Object> photos = result_river_mts.getList("photos.photo"); // Q: Interesting q how to turn an Object format into some usable POD       
+        List<PhotoItem> photos = result_river_mts.getList("photos.photo", PhotoItem.class);                
         assertEquals(5, photos.size());
 
         // visual use only
-        for (Object photo : photos){
-            PhotoItem x = JsonPath.from(photo.toString()).getObject("$", PhotoItem.class);
-            logger.info(x.toString());
+        for (PhotoItem photo : photos){
+            String url = String.format("https://www.flickr.com/photos/%s/%s", photo.owner, photo.id);
+            logger.info(url);
         }
+    }//test
+    @Test
+    public void test_2413_flickr(){
+        ResponseBody<?> r1 = get_flickr_data("river,mountains").then().statusCode(200).extract().response().body();
+        JsonPath result_river_mts = r1.jsonPath();
+        List<Object> photos = result_river_mts.getList("photos.photo"); // Q: Interesting q how to turn an Object format into some usable POD       
+        assertEquals(5, photos.size());
 
-    }
+        // visual use only
+        for (Object photoObj : photos){
+            String title = ((PhotoItem)photoObj).title;
+            // String url = String.format("https://www.flickr.com/photos/%s/%s", photo.owner, photo.id);
+            logger.info(title);
+        }
+    }//test    
 //#endregion chapter 24 tests    
 }

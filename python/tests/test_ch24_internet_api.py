@@ -124,6 +124,7 @@ def get_flickr_data(tags_string):
     return flickr_resp.json()
 
 def test_2412_flickr():
+    # https://www.flickr.com/services/apps/about/ => app garden to showcase applications
     result_river_mts = get_flickr_data("river,mountains")
     # Some code to open up a few photos that are tagged with the mountains and river tags...
     photos = result_river_mts['photos']['photo']
