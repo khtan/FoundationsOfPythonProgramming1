@@ -508,3 +508,48 @@ switching to rest-assured-all 3.30, 4.1.1, 4.2.0 still did not work
 
 https://mvnrepository.com/artifact/io.rest-assured/rest-assured-all
 ** idea: run 'mvn test' and 'mvn -D test' and compare the log files
+Created mvntest.org and mvndtest.org
+Compared and found difference only in Ch24
+The logs seem to suggest that nothing was rebuilt, so the difference is due to how mvn runs
+
+Use mvn -X to see debug messages, creating mvntestx.org and mvndtestx.org
+Only differences is due to the difference in arguments -D test leading to test=X,Y
+mvn -Dtest=HelloWorldTest,TestCh08,TestCh10,TestCh17Jsonpath,TestCh24InternetApi,TestHello,TestHelloJunit5 test
+*** workaround: specify all the directories instead of allowing test default to run
+This led to it failing until I removed HelloWorldTest.
+So, tentative solution is to disable HelloWorldTest
+** START The same failure occurs in circleci java linux docker
+   - State "START"      from              [2020-06-15 Mon 11:12]
+
+test_PostmanEcho_body - kwee.learn.TestCh24InternetApi
+
+java.lang.ExceptionInInitializerError
+	at kwee.learn.TestCh24InternetApi.test_PostmanEcho_body(TestCh24InternetApi.java:66)
+Caused by: java.lang.NullPointerException: Stream to write logs to cannot be null
+	at kwee.learn.TestCh24InternetApi.test_PostmanEcho_body(TestCh24InternetApi.java:66)
+test_2482_test_get_rhymes - kwee.learn.TestCh24InternetApi
+
+java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
+	at kwee.learn.TestCh24InternetApi.get_rhymes(TestCh24InternetApi.java:125)
+	at kwee.learn.TestCh24InternetApi.test_2482_test_get_rhymes(TestCh24InternetApi.java:141)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
