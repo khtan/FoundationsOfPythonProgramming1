@@ -1,11 +1,7 @@
 * meta
 ** startups
 //		#+STARTUP: hidestars	
-** #+SEQ_TODO: TODO(t!) START(s!) STUCK(k!) WAIT(w!) | DONE(d!) CANCEL(c!) DEFER(r!) ANSWER(n!)
-#+PROPERTY: imp_ALL high medium low
-#+PROPERTY: urg_ALL immediate shortterm longterm
-#+PROPERTY: loc_ALL home office
-#+COLUMNS: %imp %urg %loc
+#+SEQ_TODO: TODO(t!) START(s!) STUCK(k!) WAIT(w!) | DONE(d!) CANCEL(c!) DEFER(r!) ANSWER(n!)
 * DONE c:\cprojects\github\circleci\FoundationsOfPythonProgramming1\java>mvn test
 mvn test
 [INFO] Scanning for projects...
@@ -51,4 +47,464 @@ Tests run: 3, Failures: 0, Errors: 0, Skipped: 2
 [INFO] Total time:  5.063 s
 [INFO] Finished at: 2020-06-06T20:41:00-07:00
 [INFO] ------------------------------------------------------------------------
+* START mvn ch24 pass, mvn test fail
+  - State "START"      from              [2020-06-14 Sun 18:48]
+** problem
+ Able to run Ch24 tests directly in Maven: mvn -Dtest=TestCh24InternetApi test pass
+ But running all tests in Maven : mvn test
+ causes Ch24 to fail with Failed tests: 
+   TestCh24InternetApi.test_2411_itunes:150 NoClassDefFound Could not initialize ...
+   TestCh24InternetApi.test_2412_flickr:185->get_flickr_data:165 NoClassDefFound ...
+   ...
 
+ The XML failure shows that io.restassured.RestAssured could not be initialized
+     <failure message="Could not initialize class io.restassured.RestAssured" type="java.lang.NoClassDefFoundError">java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
+	 at kwee.learn.TestCh24InternetApi.get_rhymes(TestCh24InternetApi.java:126)
+	 at kwee.learn.TestCh24InternetApi.test_2482_test_get_rhymes(TestCh24InternetApi.java:142)
+ </failure>
+
+ Running 2 test classes also work
+** mvn -Dtest=TestCh24InternetApi,TestCh17Jsonpath test
+**** [INFO] Scanning for projects...
+  [INFO] 
+  [INFO] -----------------< kwee.learn:java8-junit4-quickstart >-----------------
+  [INFO] Building java8-junit4-quickstart 1.0-SNAPSHOT
+  [INFO] --------------------------------[ jar ]---------------------------------
+  [INFO] 
+  [INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ java8-junit4-quickstart ---
+  [INFO] Using 'UTF-8' encoding to copy filtered resources.
+  [INFO] skip non existing resourceDirectory c:\cprojects\github\circleci\FoundationsOfPythonProgramming1\java\src\main\resources
+  [INFO] 
+  [INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ java8-junit4-quickstart ---
+  [INFO] Nothing to compile - all classes are up to date
+  [INFO] 
+  [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ java8-junit4-quickstart ---
+  [INFO] Using 'UTF-8' encoding to copy filtered resources.
+  [INFO] skip non existing resourceDirectory c:\cprojects\github\circleci\FoundationsOfPythonProgramming1\java\src\test\resources
+  [INFO] 
+  [INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ java8-junit4-quickstart ---
+  [INFO] Nothing to compile - all classes are up to date
+  [INFO] 
+  [INFO] --- maven-surefire-plugin:2.19:test (default-test) @ java8-junit4-quickstart ---
+
+  -------------------------------------------------------
+****    T E S T S
+  -------------------------------------------------------
+*****   Running kwee.learn.TestCh17Jsonpath
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0001_listAllBookCategories
+   INFO: category = reference
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0001_listAllBookCategories
+   INFO: category = fiction
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0001_listAllBookCategories
+   INFO: category = fiction
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0001_listAllBookCategories
+   INFO: category = fiction
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0002_how_to_deal_with_object
+   INFO: bookJson={"id"="50006251707", "owner"="42905214@N08", "secret"="e7c0720260", "server"="65535", "farm"="66", "title"="Another Stillaguamish River Landscape", "ispublic"="1", "isfriend"="0", "isfamily"="0"}
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0005_allBooks
+   INFO: Book: Sayings of the Century
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0005_allBooks
+   INFO: Book: Sword of Honour
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0005_allBooks
+   INFO: Book: Moby Dick
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0005_allBooks
+   INFO: Book: The Lord of the Rings
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: ----- Book -----
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	category -> reference
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	author -> Nigel Rees
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	title -> Sayings of the Century
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	price -> 8.95
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: ----- Book -----
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	category -> fiction
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	author -> Evelyn Waugh
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	title -> Sword of Honour
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	price -> 12.99
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: ----- Book -----
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	category -> fiction
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	author -> Herman Melville
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	title -> Moby Dick
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	isbn -> 0-553-21311-3
+   Jun 14, 2020 8:04:40 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+   INFO: 	price -> 8.99
+   Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.625 sec - in kwee.learn.TestCh17Jsonpath
+*****   Running kwee.learn.TestCh24InternetApi
+   Request method:	GET
+   Request URI:	https://api.datamuse.com/words?rel_rhy=funny&max=3
+   Proxy:			<none>
+   Request params:	rel_rhy=funny
+				   max=3
+   Query params:	<none>
+   Form params:	<none>
+   Path params:	<none>
+   Headers:		Accept=*/*
+   Cookies:		<none>
+   Multiparts:		<none>
+   Body:			<none>
+   Request method:	GET
+   Request URI:	http://api.flickr.com/services/rest?api_key=464b86270211da70af8a940c0ed6c219&tags=river%2Cmountains&tag_mode=all&method=flickr.photos.search&per_page=5&media=photos&format=json&nojsoncallback=1
+   Proxy:			<none>
+   Request params:	api_key=464b86270211da70af8a940c0ed6c219
+				   tags=river,mountains
+				   tag_mode=all
+				   method=flickr.photos.search
+				   per_page=5
+				   media=photos
+				   format=json
+				   nojsoncallback=1
+   Query params:	<none>
+   Form params:	<none>
+   Path params:	<none>
+   Headers:		Accept=*/*
+   Cookies:		<none>
+   Multiparts:		<none>
+   Body:			<none>
+   Jun 14, 2020 8:04:43 PM kwee.learn.TestCh24InternetApi test_2412_flickr
+   INFO: https://www.flickr.com/photos/68302910@N06/50007688577
+   Jun 14, 2020 8:04:43 PM kwee.learn.TestCh24InternetApi test_2412_flickr
+   INFO: https://www.flickr.com/photos/29617521@N06/50006507598
+   Jun 14, 2020 8:04:43 PM kwee.learn.TestCh24InternetApi test_2412_flickr
+   INFO: https://www.flickr.com/photos/42905214@N08/50006251707
+   Jun 14, 2020 8:04:43 PM kwee.learn.TestCh24InternetApi test_2412_flickr
+   INFO: https://www.flickr.com/photos/53384250@N07/50005940871
+   Jun 14, 2020 8:04:43 PM kwee.learn.TestCh24InternetApi test_2412_flickr
+   INFO: https://www.flickr.com/photos/133876835@N08/50005366642
+   Jun 14, 2020 8:04:44 PM kwee.learn.TestCh24InternetApi test_2461_get
+   INFO: first 50 chars: [{"word":"money","score":4415,"numSyllables":2},{"
+   Jun 14, 2020 8:04:44 PM kwee.learn.TestCh24InternetApi test_2461_get
+   INFO: money 4415 2
+   Jun 14, 2020 8:04:44 PM kwee.learn.TestCh24InternetApi test_2461_get
+   INFO: lstring,size() = 84
+   Jun 14, 2020 8:04:44 PM kwee.learn.TestCh24InternetApi test_2461_get
+   INFO: lo,size() = 84
+   Request method:	GET
+   Request URI:	https://api.datamuse.com/words?rel_rhy=funny
+   Proxy:			<none>
+   Request params:	rel_rhy=funny
+   Query params:	<none>
+   Form params:	<none>
+   Path params:	<none>
+   Headers:		Accept=*/*
+   Cookies:		<none>
+   Multiparts:		<none>
+   Body:			<none>
+   Request method:	GET
+   Request URI:	http://api.flickr.com/services/rest?api_key=464b86270211da70af8a940c0ed6c219&tags=river%2Cmountains&tag_mode=all&method=flickr.photos.search&per_page=5&media=photos&format=json&nojsoncallback=1
+   Proxy:			<none>
+   Request params:	api_key=464b86270211da70af8a940c0ed6c219
+				   tags=river,mountains
+				   tag_mode=all
+				   method=flickr.photos.search
+				   per_page=5
+				   media=photos
+				   format=json
+				   nojsoncallback=1
+   Query params:	<none>
+   Form params:	<none>
+   Path params:	<none>
+   Headers:		Accept=*/*
+   Cookies:		<none>
+   Multiparts:		<none>
+   Body:			<none>
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: size=37
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Michigan Insider
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Ann Arbor Stories | Ann Arbor District Library
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: 2|42 Community Church - Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Vineyard Church of Ann Arbor Sermon Podcast
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Inside the Huddle
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Grace Ann Arbor Church
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Grace Bible Church Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Sermons  NewLifeA2.org
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Ann Arbor Mentality
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Living Writers
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Its Hot In Here
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Presenting Alfred Hitchcock Presents | Ann Arbor District Library
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Sermons from First Pres
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Blue Ocean Faith Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Worship & Teachings from Radiant Church - Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Ann Arbor SPARK CEO Podcast
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Behind The Marquee | Ann Arbor District Library
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Fellow Youths | Ann Arbor District Library
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: St. Nick Podcasts
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Stories from The Top
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Straight outta Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: The M Zone - WTKA-AM
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Mosaic Church of Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Calvary Sunday Messages
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Martin Bandyke Under Covers | Ann Arbor District Library
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Welcome to Tree Town
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Grace Ann Arbor Podcast
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Antioch Ann Arbor Equipping Podcast
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Body of Work | Ann Arbor District Library
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: AADL Reads | Ann Arbor District Library
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: A2 City News
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Redeemer Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Zion Lutheran Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Antioch Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Christ Church Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Jesus on Prophecy Ann Arbor
+   Jun 14, 2020 8:04:46 PM kwee.learn.TestCh24InternetApi test_2411_itunes
+   INFO: Front Page Ann Arbor
+   Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.442 sec - in kwee.learn.TestCh24InternetApi
+****   Results :
+
+   Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+
+   [INFO] ------------------------------------------------------------------------
+   [INFO] BUILD SUCCESS
+   [INFO] ------------------------------------------------------------------------
+   [INFO] Total time:  10.587 s
+   [INFO] Finished at: 2020-06-14T20:04:46-07:00
+   [INFO] ------------------------------------------------------------------------
+** mvn test
+*** [INFO] Scanning for projects...
+ [INFO] 
+ [INFO] -----------------< kwee.learn:java8-junit4-quickstart >-----------------
+ [INFO] Building java8-junit4-quickstart 1.0-SNAPSHOT
+ [INFO] --------------------------------[ jar ]---------------------------------
+ [INFO] 
+ [INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ java8-junit4-quickstart ---
+ [INFO] Using 'UTF-8' encoding to copy filtered resources.
+ [INFO] skip non existing resourceDirectory c:\cprojects\github\circleci\FoundationsOfPythonProgramming1\java\src\main\resources
+ [INFO] 
+ [INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ java8-junit4-quickstart ---
+ [INFO] Nothing to compile - all classes are up to date
+ [INFO] 
+ [INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ java8-junit4-quickstart ---
+ [INFO] Using 'UTF-8' encoding to copy filtered resources.
+ [INFO] skip non existing resourceDirectory c:\cprojects\github\circleci\FoundationsOfPythonProgramming1\java\src\test\resources
+ [INFO] 
+ [INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ java8-junit4-quickstart ---
+ [INFO] Nothing to compile - all classes are up to date
+ [INFO] 
+ [INFO] --- maven-surefire-plugin:2.19:test (default-test) @ java8-junit4-quickstart ---
+
+ -------------------------------------------------------
+***   T E S T S
+ -------------------------------------------------------
+****  Running kwee.learn.HelloWorldTest
+  Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.053 sec - in kwee.learn.HelloWorldTest
+****   Running kwee.learn.TestCh08
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh08 test_1
+  INFO: num_rainy_months = 5
+  Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.071 sec - in kwee.learn.TestCh08
+****   Running kwee.learn.TestCh10
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: >Writing essays for school can be difficult but<
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: >many students find that by researching their topic that they<
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: >have more to say and are better informed. Here are the university<
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: >we require many undergraduate students to take a first year writing requirement<
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: >so that they can<
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: >have a solid foundation for their writing skills. This comes<
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: >in handy for many students.<
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: >Different schools have different requirements, but everyone uses<
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: >writing at some point in their academic career, be it essays, research papers,<
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: >technical write ups, or scripts.<
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_scanner
+  INFO: num_char: 527
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_stream_of_string2
+  INFO: num_char: 527
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_stream_of_string
+  INFO: num_char: 527
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_filesreadalllines
+  INFO: num_char: 527
+  Jun 14, 2020 8:07:45 PM kwee.learn.TestCh10 test_1031_num_char_read_bufferedreader
+  INFO: num_char: 527
+  Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.024 sec - in kwee.learn.TestCh10
+****   Running kwee.learn.TestCh17Jsonpath
+  Jun 14, 2020 8:07:46 PM kwee.learn.TestCh17Jsonpath test_0001_listAllBookCategories
+  INFO: category = reference
+  Jun 14, 2020 8:07:46 PM kwee.learn.TestCh17Jsonpath test_0001_listAllBookCategories
+  INFO: category = fiction
+  Jun 14, 2020 8:07:46 PM kwee.learn.TestCh17Jsonpath test_0001_listAllBookCategories
+  INFO: category = fiction
+  Jun 14, 2020 8:07:46 PM kwee.learn.TestCh17Jsonpath test_0001_listAllBookCategories
+  INFO: category = fiction
+  Jun 14, 2020 8:07:46 PM kwee.learn.TestCh17Jsonpath test_0002_how_to_deal_with_object
+  INFO: bookJson={"id"="50006251707", "owner"="42905214@N08", "secret"="e7c0720260", "server"="65535", "farm"="66", "title"="Another Stillaguamish River Landscape", "ispublic"="1", "isfriend"="0", "isfamily"="0"}
+  Jun 14, 2020 8:07:46 PM kwee.learn.TestCh17Jsonpath test_0005_allBooks
+  INFO: Book: Sayings of the Century
+  Jun 14, 2020 8:07:46 PM kwee.learn.TestCh17Jsonpath test_0005_allBooks
+  INFO: Book: Sword of Honour
+  Jun 14, 2020 8:07:46 PM kwee.learn.TestCh17Jsonpath test_0005_allBooks
+  INFO: Book: Moby Dick
+  Jun 14, 2020 8:07:46 PM kwee.learn.TestCh17Jsonpath test_0005_allBooks
+  INFO: Book: The Lord of the Rings
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: ----- Book -----
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	category -> reference
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	author -> Nigel Rees
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	title -> Sayings of the Century
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	price -> 8.95
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: ----- Book -----
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	category -> fiction
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	author -> Evelyn Waugh
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	title -> Sword of Honour
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	price -> 12.99
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: ----- Book -----
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	category -> fiction
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	author -> Herman Melville
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	title -> Moby Dick
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	isbn -> 0-553-21311-3
+  Jun 14, 2020 8:07:47 PM kwee.learn.TestCh17Jsonpath test_0004_allBooksPriced
+  INFO: 	price -> 8.99
+  Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.705 sec - in kwee.learn.TestCh17Jsonpath
+****   Running kwee.learn.TestCh24InternetApi
+  Tests run: 9, Failures: 9, Errors: 0, Skipped: 0, Time elapsed: 0.048 sec <<< FAILURE! - in kwee.learn.TestCh24InternetApi
+  test_PostmanEcho_body()  Time elapsed: 0.035 sec  <<< FAILURE!
+  java.lang.ExceptionInInitializerError
+	  at kwee.learn.TestCh24InternetApi.test_PostmanEcho_body(TestCh24InternetApi.java:67)
+  Caused by: java.lang.NullPointerException: Stream to write logs to cannot be null
+	  at kwee.learn.TestCh24InternetApi.test_PostmanEcho_body(TestCh24InternetApi.java:67)
+
+  test_2482_test_get_rhymes()  Time elapsed: 0.001 sec  <<< FAILURE!
+  java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
+	  at kwee.learn.TestCh24InternetApi.get_rhymes(TestCh24InternetApi.java:126)
+	  at kwee.learn.TestCh24InternetApi.test_2482_test_get_rhymes(TestCh24InternetApi.java:142)
+
+  test_2412_flickr()  Time elapsed: 0.001 sec  <<< FAILURE!
+  java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
+	  at kwee.learn.TestCh24InternetApi.get_flickr_data(TestCh24InternetApi.java:165)
+	  at kwee.learn.TestCh24InternetApi.test_2412_flickr(TestCh24InternetApi.java:185)
+
+  test_PostmanEcho_statuscode()  Time elapsed: 0 sec  <<< FAILURE!
+  java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
+	  at kwee.learn.TestCh24InternetApi.test_PostmanEcho_statuscode(TestCh24InternetApi.java:61)
+
+  test_2461_get()  Time elapsed: 0.001 sec  <<< FAILURE!
+  java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
+	  at kwee.learn.TestCh24InternetApi.test_2461_get(TestCh24InternetApi.java:86)
+
+  test_2463_get()  Time elapsed: 0.001 sec  <<< FAILURE!
+  java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
+	  at kwee.learn.TestCh24InternetApi.test_2463_get(TestCh24InternetApi.java:116)
+
+  test_PostmanEcho_header()  Time elapsed: 0.001 sec  <<< FAILURE!
+  java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
+	  at kwee.learn.TestCh24InternetApi.test_PostmanEcho_header(TestCh24InternetApi.java:74)
+
+  test_2413_flickr()  Time elapsed: 0.001 sec  <<< FAILURE!
+  java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
+	  at kwee.learn.TestCh24InternetApi.get_flickr_data(TestCh24InternetApi.java:165)
+	  at kwee.learn.TestCh24InternetApi.test_2413_flickr(TestCh24InternetApi.java:199)
+
+  test_2411_itunes()  Time elapsed: 0.001 sec  <<< FAILURE!
+  java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
+	  at kwee.learn.TestCh24InternetApi.test_2411_itunes(TestCh24InternetApi.java:150)
+****   Running kwee.learn.TestHello
+  Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0 sec - in kwee.learn.TestHello
+****   Running kwee.learn.TestHelloJunit5
+  Tests run: 1, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 0 sec - in kwee.learn.TestHelloJunit5
+
+  Results :
+
+  Failed tests: 
+    TestCh24InternetApi.test_2411_itunes:150 NoClassDefFound Could not initialize ...
+    TestCh24InternetApi.test_2412_flickr:185->get_flickr_data:165 NoClassDefFound ...
+    TestCh24InternetApi.test_2413_flickr:199->get_flickr_data:165 NoClassDefFound ...
+    TestCh24InternetApi.test_2461_get:86 NoClassDefFound Could not initialize clas...
+    TestCh24InternetApi.test_2463_get:116 NoClassDefFound Could not initialize cla...
+    TestCh24InternetApi.test_2482_test_get_rhymes:142->get_rhymes:126 NoClassDefFound
+    TestCh24InternetApi.test_PostmanEcho_body:67 ExceptionInInitializer
+    TestCh24InternetApi.test_PostmanEcho_header:74 NoClassDefFound Could not initi...
+    TestCh24InternetApi.test_PostmanEcho_statuscode:61 NoClassDefFound Could not i...
+
+  Tests run: 25, Failures: 9, Errors: 0, Skipped: 2
+
+  [INFO] ------------------------------------------------------------------------
+***  [INFO] BUILD FAILURE
+  [INFO] ------------------------------------------------------------------------
+  [INFO] Total time:  5.819 s
+  [INFO] Finished at: 2020-06-14T20:07:47-07:00
+  [INFO] ------------------------------------------------------------------------
+  [ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.19:test (default-test) on project java8-junit4-quickstart: There are test failures.
+  [ERROR] 
+  [ERROR] Please refer to c:\cprojects\github\circleci\FoundationsOfPythonProgramming1\java\target\surefire-reports for the individual test results.
+  [ERROR] -> [Help 1]
+  [ERROR] 
+  [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+  [ERROR] Re-run Maven using the -X switch to enable full debug logging.
+  [ERROR] 
+  [ERROR] For more information about the errors and possible solutions, please read the following articles:
+  [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+** Running mvn test in VS Code terminal also fails but VS Code Test Manager is able to run
+** pom.xml
+switching to rest-assured-all 3.30, 4.1.1, 4.2.0 still did not work
+4.3.0 is still the best except for ch24
+
+https://mvnrepository.com/artifact/io.rest-assured/rest-assured-all
+** idea: run 'mvn test' and 'mvn -D test' and compare the log files
