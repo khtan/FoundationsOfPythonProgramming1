@@ -36,7 +36,7 @@ class BookItem{
     public String isbn;
     public float price;
 }
-public class test_ch17_jsonpath {
+public class TestCh17Jsonpath {
     private Logger logger;
     private static final String storeJson =
             "{ \"store\": {\n" +
@@ -73,7 +73,7 @@ public class test_ch17_jsonpath {
 
     @BeforeEach
     public void setUp(){
-       logger = Logger.getLogger(test_ch17_jsonpath.class.getName());
+       logger = Logger.getLogger(TestCh17Jsonpath.class.getName());
     }
 // #region xxx
 // #endregion xxx
@@ -150,7 +150,7 @@ public class test_ch17_jsonpath {
         });
     }
     @Test
-    public void XXX(){
+    public void test_0002_how_to_deal_with_object(){
         // bookJson is an Object document, not Json, unless = is changed to :
         String bookJson = "{\"id\"=\"50006251707\", \"owner\"=\"42905214@N08\", \"secret\"=\"e7c0720260\", \"server\"=\"65535\", \"farm\"=\"66\", \"title\"=\"Another Stillaguamish River Landscape\", \"ispublic\"=\"1\", \"isfriend\"=\"0\", \"isfamily\"=\"0\"}";
         logger.info(String.format("bookJson=%s", bookJson));

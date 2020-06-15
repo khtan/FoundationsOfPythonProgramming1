@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import io.restassured.common.mapper.TypeRef;
@@ -11,7 +12,8 @@ import io.restassured.path.json.JsonPath;
 
 // static imports
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static io.restassured.path.json.JsonPath.with;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+// import static io.restassured.path.json.JsonPath.with;
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -24,7 +26,7 @@ import static org.hamcrest.Matchers.equalTo;
    https://stackoverflow.com/questions/730283/does-java-have-a-complete-enum-for-http-response-codes
    4. restassured has its own JsonPath builtin, so no need to use Jayway's JsonPath in github.com/json-path/JsonPath
 */
-class PhotoItem{
+class PhotoItem {
     public String id;
     public String owner;
     public String secret;
@@ -34,20 +36,22 @@ class PhotoItem{
     public String ispublic;
     public String isfriend;
     public String isfamily;
+    public PhotoItem(){id="uninitialized"; owner=""; secret=""; server=""; farm=""; title=""; ispublic="0"; isfriend="0"; isfamily="0";};
 }
 class RhymeItem { // single line because plain data type
     public String word;
     public Integer score;
     public Integer numSyllables;
+    public RhymeItem(){word="uninitialized"; score= -1; numSyllables= -1;};    
     public RhymeItem(final String w, final Integer s, final Integer n) { word = w; score = s; numSyllables = n; }
 }
 
-public class test_ch24_internet_api {
+public class TestCh24InternetApi {
     private Logger logger;
     private String flickr_key = "464b86270211da70af8a940c0ed6c219";
     @BeforeEach
     public void setUp(){
-       logger = Logger.getLogger(test_ch24_internet_api.class.getName());
+       logger = Logger.getLogger(TestCh24InternetApi.class.getName());
     }
     // #region Postman examples
     // http://www.projectdebug.com/send-get-request-using-rest-assured/
@@ -117,7 +121,7 @@ public class test_ch24_internet_api {
         then().
             statusCode(200);
     }
-    List<String> get_rhymes(String word){
+    private List<String> get_rhymes(String word){
         String ROOT_URI = "https://api.datamuse.com";
         ResponseBody<?> rb = given().
            log().all().
@@ -177,7 +181,7 @@ public class test_ch24_internet_api {
         return r;
     }
     @Test
-    public void test_2412_flickr(){
+    public void test_2412_flickr(){ // extract into PhotoItem
         ResponseBody<?> r1 = get_flickr_data("river,mountains").then().statusCode(200).extract().response().body();
         JsonPath result_river_mts = r1.jsonPath();
         // List<Object> photos = result_river_mts.getList("photos.photo"); // Q: Interesting q how to turn an Object format into some usable POD       
@@ -191,7 +195,7 @@ public class test_ch24_internet_api {
         }
     }//test
     @Test
-    public void test_2413_flickr(){
+    public void test_2413_flickr(){ // extract into Object, but unable to access fields in Object correctly
         ResponseBody<?> r1 = get_flickr_data("river,mountains").then().statusCode(200).extract().response().body();
         JsonPath result_river_mts = r1.jsonPath();
         List<Object> photos = result_river_mts.getList("photos.photo"); // Q: Interesting q how to turn an Object format into some usable POD       
@@ -199,9 +203,11 @@ public class test_ch24_internet_api {
 
         // visual use only
         for (Object photoObj : photos){
-            String title = ((PhotoItem)photoObj).title;
-            // String url = String.format("https://www.flickr.com/photos/%s/%s", photo.owner, photo.id);
-            logger.info(title);
+            assertThrows(ClassCastException.class, () -> {
+                String title = ((PhotoItem)photoObj).title;
+                // String url = String.format("https://www.flickr.com/photos/%s/%s", photo.owner, photo.id);
+                logger.info(title);
+            });
         }
     }//test    
 //#endregion chapter 24 tests    
