@@ -47,7 +47,8 @@ Tests run: 3, Failures: 0, Errors: 0, Skipped: 2
 [INFO] Total time:  5.063 s
 [INFO] Finished at: 2020-06-06T20:41:00-07:00
 [INFO] ------------------------------------------------------------------------
-* START mvn ch24 pass, mvn test fail
+* DONE mvn ch24 pass, mvn test fail
+  - State "DONE"       from "START"      [2020-06-15 Mon 12:08]
   - State "START"      from              [2020-06-14 Sun 18:48]
 ** problem
  Able to run Ch24 tests directly in Maven: mvn -Dtest=TestCh24InternetApi test pass
@@ -518,7 +519,8 @@ mvn -Dtest=HelloWorldTest,TestCh08,TestCh10,TestCh17Jsonpath,TestCh24InternetApi
 *** workaround: specify all the directories instead of allowing test default to run
 This led to it failing until I removed HelloWorldTest.
 So, tentative solution is to disable HelloWorldTest
-** START The same failure occurs in circleci java linux docker
+** DONE The same failure occurs in circleci java linux docker
+   - State "DONE"       from "START"      [2020-06-15 Mon 12:08]
    - State "START"      from              [2020-06-15 Mon 11:12]
 
 test_PostmanEcho_body - kwee.learn.TestCh24InternetApi

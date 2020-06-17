@@ -5,6 +5,7 @@ import logging
 import pytest
 import io
 import math
+import re
 from unittest.mock import patch
 ''' Notes
 Creation: map = {} # empty map
@@ -88,7 +89,6 @@ def test_117_scrabble_score():
     # python code returns 337353 for coursera, but the scarlet.txt could not be accessed
     # the downloaded scarlet.txt currently returns 337382
     assert 337382 == score
-
 def test_118_bestkey():
     ''' 
     Write a program that finds the key in a dictionary that has the maximum value. 
@@ -109,7 +109,6 @@ def test_118_bestkey():
     logger.info(bestkey)
     expected = 312
     assert expected == d[bestkey]
-
 def test_118_bestitem():
     ''' 
     Change algo to keep best item, then can show both key and value
@@ -130,5 +129,57 @@ def test_118_bestitem():
     logger.info(bestitem[1])
     expected = 312
     assert expected == bestitem[1]
+
+def test_11112_pirate(): # 11.11 exercises
+   '''
+   Here’s a table of English to Pirate translations
+
+   | English    | Pirate        |
+   |------------+---------------|
+   | sir        | matey         |
+   | hotel      | fleabag inn   |
+   | student    | swabbie       |
+   | boy        | matey         |
+   | madam      | proud beauty  |
+   | professor  | foul blaggart |
+   | restaurant | galley        |
+   | your       | yer           |
+   | excuse     | arr           |
+   | students   | swabbies      |
+   | are        | be            |
+   | lawyer     | foul blaggart |
+   | the        | th’           |
+   | restroom   | head          |
+   | my         | me            |
+   | hello      | avast         |
+   | is         | be            |
+   | man        | matey         |
+   |            |               |
+
+   Write a program that asks the user for a sentence in English and then translates that sentence to Pirate.
+   '''
+   English2Pirate={'sir':'matey','hotel':'fleabag inn','student':'swabbie','boy':'matey','madam':'proud beauty','professor':'foul blaggart','restaurant':'galley','your':'yer','excuse':'arr','students':'swabbies','are':'be','lawyer':'foul blaggart','the':'th’','restroom':'head','my':'me','hello':'avast','is':'be','man':'matey'}
+   EnglishSentences=[
+    'Hello boy, how are you?',
+    'hello boy, how are you?',
+    'Good morning sir and madam!',
+    'Excuse me, where is the restroom?'
+   ]
+   CapEnglish2Pirate={} # temporary map to get capitalized words
+   for english in English2Pirate:
+      capEnglish = english.capitalize()
+      CapEnglish2Pirate[english.capitalize()] = English2Pirate[english].capitalize()
+   # merge the 2 dictionaries
+   English2Pirate.update(CapEnglish2Pirate)    
+   
+   for line in EnglishSentences:
+      pirateLine = []
+      for word in line.split():
+        filteredWord = re.sub('\W+','',word) # take out any punctuations etc
+        if (filteredWord in English2Pirate):
+            pirateLine.append(word.replace(filteredWord, English2Pirate[filteredWord]))
+        else:
+            pirateLine.append(word)
+      logger.info("p ={0}".format(pirateLine))
 
 # endregion tests
