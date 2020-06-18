@@ -151,7 +151,7 @@ def test_118_bestitem():
     expected = 312
     assert expected == bestitem[1]
 
-testdata = [
+testdata = [ # english sentence, pirate sentence
     ('Hello boy, how are you?','Avast matey, how be you?'),
     ('I saw the professor and his student entering the restaurant near the hotel this afternoon','I saw th’ foul blaggart and his swabbie entering th’ galley near th’ fleabag inn this afternoon'),
     ('Good morning Sir and Madam!','Good morning Matey and Proud beauty!'),
