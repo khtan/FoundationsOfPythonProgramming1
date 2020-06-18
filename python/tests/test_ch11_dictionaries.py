@@ -33,6 +33,27 @@ Issues:
 logger = logging.getLogger(__name__)
 # endregion globals
 # region helpers
+def GetEnglish2PirateDictionary():
+   English2Pirate = {'sir':'matey','hotel':'fleabag inn','student':'swabbie','boy':'matey','madam':'proud beauty','professor':'foul blaggart','restaurant':'galley','your':'yer','excuse':'arr','students':'swabbies','are':'be','lawyer':'foul blaggart','the':'th’','restroom':'head','my':'me','hello':'avast','is':'be','man':'matey'}
+   CapEnglish2Pirate={} # temporary map to get capitalized words
+   for english in English2Pirate:
+      capEnglish = english.capitalize()
+      CapEnglish2Pirate[english.capitalize()] = English2Pirate[english].capitalize()
+   # merge the 2 dictionaries
+   English2Pirate.update(CapEnglish2Pirate)
+   return English2Pirate
+
+def TranslateEnglish2Pirate(English2Pirate, englishSentence):
+    pirateLine = []
+    for word in englishSentence.split():
+        filteredWord = re.sub('\W+','',word) # take out any punctuations etc
+        if (filteredWord in English2Pirate):
+            pirateLine.append(word.replace(filteredWord, English2Pirate[filteredWord]))
+        else:
+            pirateLine.append(word)
+    return " ".join(pirateLine)
+
+
 # endregion helpers
 # region tests for 11
 def test_116_1():
@@ -158,28 +179,24 @@ def test_11112_pirate(): # 11.11 exercises
 
    Write a program that asks the user for a sentence in English and then translates that sentence to Pirate.
    '''
-   English2Pirate={'sir':'matey','hotel':'fleabag inn','student':'swabbie','boy':'matey','madam':'proud beauty','professor':'foul blaggart','restaurant':'galley','your':'yer','excuse':'arr','students':'swabbies','are':'be','lawyer':'foul blaggart','the':'th’','restroom':'head','my':'me','hello':'avast','is':'be','man':'matey'}
    EnglishSentences=[
     'Hello boy, how are you?',
-    'hello boy, how are you?',
-    'Good morning sir and madam!',
+    'I saw the professor and his student entering the restaurant near the hotel this afternoon',
+    'Good morning Sir and Madam!',
     'Excuse me, where is the restroom?'
    ]
-   CapEnglish2Pirate={} # temporary map to get capitalized words
-   for english in English2Pirate:
-      capEnglish = english.capitalize()
-      CapEnglish2Pirate[english.capitalize()] = English2Pirate[english].capitalize()
-   # merge the 2 dictionaries
-   English2Pirate.update(CapEnglish2Pirate)    
-   
+   expectedPirateSentences=[
+    'Avast matey, how be you?',
+    'I saw th’ foul blaggart and his swabbie entering th’ galley near th’ fleabag inn this afternoon',
+    'Good morning Matey and Proud beauty!',
+    'Arr me, where be th’ head?'
+   ]
+   English2Pirate=GetEnglish2PirateDictionary()
+   index = 0
    for line in EnglishSentences:
-      pirateLine = []
-      for word in line.split():
-        filteredWord = re.sub('\W+','',word) # take out any punctuations etc
-        if (filteredWord in English2Pirate):
-            pirateLine.append(word.replace(filteredWord, English2Pirate[filteredWord]))
-        else:
-            pirateLine.append(word)
-      logger.info("p ={0}".format(pirateLine))
+       pirateLine = TranslateEnglish2Pirate(English2Pirate, line)
+       assert expectedPirateSentences[index] == pirateLine
+       index += 1
+       # logger.info("p ={0}".format(pirateLine))
 
 # endregion tests
