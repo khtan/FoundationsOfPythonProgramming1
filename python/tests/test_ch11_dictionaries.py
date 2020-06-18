@@ -38,7 +38,7 @@ def GetEnglish2PirateDictionary():
    CapEnglish2Pirate={} # temporary map to get capitalized words
    for english in English2Pirate:
       capEnglish = english.capitalize()
-      CapEnglish2Pirate[english.capitalize()] = English2Pirate[english].capitalize()
+      CapEnglish2Pirate[capEnglish] = English2Pirate[english].capitalize()
    # merge the 2 dictionaries
    English2Pirate.update(CapEnglish2Pirate)
    return English2Pirate
