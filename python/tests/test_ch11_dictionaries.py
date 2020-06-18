@@ -192,11 +192,10 @@ def test_11112_pirate(): # 11.11 exercises
     'Arr me, where be th’ head?'
    ]
    English2Pirate=GetEnglish2PirateDictionary()
-   index = 0
-   for line in EnglishSentences:
+   testData = zip(EnglishSentences, expectedPirateSentences)
+
+   for (line, expected) in testData:
        pirateLine = TranslateEnglish2Pirate(English2Pirate, line)
-       assert expectedPirateSentences[index] == pirateLine
-       index += 1
-       # logger.info("p ={0}".format(pirateLine))
+       assert expected == pirateLine
 
 # endregion tests
