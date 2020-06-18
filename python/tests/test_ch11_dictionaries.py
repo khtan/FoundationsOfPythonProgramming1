@@ -151,7 +151,14 @@ def test_118_bestitem():
     expected = 312
     assert expected == bestitem[1]
 
-def test_11112_pirate(): # 11.11 exercises
+testdata = [
+    ('Hello boy, how are you?','Avast matey, how be you?'),
+    ('I saw the professor and his student entering the restaurant near the hotel this afternoon','I saw th’ foul blaggart and his swabbie entering th’ galley near th’ fleabag inn this afternoon'),
+    ('Good morning Sir and Madam!','Good morning Matey and Proud beauty!'),
+    ('Excuse me, where is the restroom?','Arr me, where be th’ head?'),
+]
+@pytest.mark.parametrize("english, expectedPirate", testdata)
+def test_11112_pirate(english, expectedPirate): # 11.11 exercises
    '''
    Here’s a table of English to Pirate translations
 
@@ -179,23 +186,8 @@ def test_11112_pirate(): # 11.11 exercises
 
    Write a program that asks the user for a sentence in English and then translates that sentence to Pirate.
    '''
-   EnglishSentences=[
-    'Hello boy, how are you?',
-    'I saw the professor and his student entering the restaurant near the hotel this afternoon',
-    'Good morning Sir and Madam!',
-    'Excuse me, where is the restroom?'
-   ]
-   expectedPirateSentences=[
-    'Avast matey, how be you?',
-    'I saw th’ foul blaggart and his swabbie entering th’ galley near th’ fleabag inn this afternoon',
-    'Good morning Matey and Proud beauty!',
-    'Arr me, where be th’ head?'
-   ]
    English2Pirate=GetEnglish2PirateDictionary()
-   testData = zip(EnglishSentences, expectedPirateSentences)
-
-   for (line, expected) in testData:
-       pirateLine = TranslateEnglish2Pirate(English2Pirate, line)
-       assert expected == pirateLine
+   pirateLine = TranslateEnglish2Pirate(English2Pirate, english)
+   assert expectedPirate == pirateLine
 
 # endregion tests
