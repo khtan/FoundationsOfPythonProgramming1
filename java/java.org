@@ -534,24 +534,7 @@ test_2482_test_get_rhymes - kwee.learn.TestCh24InternetApi
 java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAssured
 	at kwee.learn.TestCh24InternetApi.get_rhymes(TestCh24InternetApi.java:125)
 	at kwee.learn.TestCh24InternetApi.test_2482_test_get_rhymes(TestCh24InternetApi.java:141)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+* START Periodic problem with mvn clean
+  - State "START"      from              [2020-06-19 Fri 11:16]
+The target folder seems to be locked by some explorer process, even though no explorers are on "target" folder
+Closing all explorers appears to fix this
