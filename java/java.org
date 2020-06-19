@@ -538,3 +538,8 @@ java.lang.NoClassDefFoundError: Could not initialize class io.restassured.RestAs
   - State "START"      from              [2020-06-19 Fri 11:16]
 The target folder seems to be locked by some explorer process, even though no explorers are on "target" folder
 Closing all explorers appears to fix this
+
+These 2 errors seem to cause the Test Manager to fail to display tests
+'.#TestCh11Dictionaries' is not a valid Java identifier
+.#TestCh11Dictionaries.java [in kwee.learn [in src/test/java [in java8-junit4-quickstart]]] does not exist
+

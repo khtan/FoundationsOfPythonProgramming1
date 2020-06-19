@@ -3,6 +3,8 @@ package kwee.learn;
 import java.util.logging.Logger;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.AbstractMap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +39,7 @@ public class TestCh11Dictionaries {
     public void setUp(){
        logger = Logger.getLogger(test_template.class.getName());
     }
-// #region xxx
+// #region helpers
     String Capitalize(String input){
         if ( input != null &&  ! input.isEmpty() ){
             if (input.length() == 1){
@@ -50,44 +52,50 @@ public class TestCh11Dictionaries {
         }
     }
     Map<String, String> GetEnglish2PirateDictionary(){
-        Map<String, String> English2Pirate = new HashMap<String,String>(
-           /*
-           Map.of(
-                  "sir","matey",
-                  "hotel","fleabag inn",
-                  "student","swabbie",
-                  "boy","matey",
-                  "madam","proud beauty",
-                  "professor","foul blaggart",
-                  "restaurant","galley",
-                  "your","yer",
-                  "excuse","arr",
-                  "students","swabbies",
-                  "are","be",
-                  "lawyer","foul blaggart",
-                  "the","th’",
-                  "restroom","head",
-                  "my","me",
-                  "hello","avast",
-                  "is","be",
-                  "man","matey"
-            )
-            */
-        );
-        var CapEnglishPirate=new HashMap<String,String>();
+        Map<String, String> English2Pirate = new HashMap<String,String>(){{
+            put("sir","matey");
+            put("hotel","fleabag inn");
+            put("student","swabbie");
+            put("boy","matey");
+            put("madam","proud beauty");
+            put("professor","foul blaggart");
+            put("restaurant","galley");
+            put("your","yer");
+            put("excuse","arr");
+            put("students","swabbies");
+            put("are","be");
+            put("lawyer","foul blaggart");
+            put("the","th’");
+            put("restroom","head");
+            put("my","me");
+            put("hello","avast");
+            put("is","be");
+            put("man","matey");
+        }};
+        var CapEnglish2Pirate=new HashMap<String,String>();
         English2Pirate.forEach((k,v) -> {
-            CapEnglishPirate.put(Capitalize(k), Capitalize(v));
+            CapEnglish2Pirate.put(Capitalize(k), Capitalize(v));
         });
-
-
-
-        
-        return null;
+        CapEnglish2Pirate.forEach((k,v) -> {
+                English2Pirate.put(k, v);
+        });
+        return English2Pirate;
     }
     String TranslateEnglish2Pirate(Map<String,String> English2Pirate, String englishSentence){
-        return "";
+        List<String> pirateLine = new ArrayList<String>();
+        for(String word : englishSentence.split(" ")){
+            String filteredWord = word.replaceAll("\\W+", "");
+            if(English2Pirate.containsKey(filteredWord)){
+                String replacedWord = word.replace(filteredWord, English2Pirate.get(filteredWord));
+                pirateLine.add(replacedWord); // Append returns new sequence
+            }
+            else{
+                pirateLine.add(word);
+            }
+        }
+        return String.join(" ", pirateLine);
     }
-// #endregion xxx
+// #endregion helpers
 // #region tests
     @Test
     public void test_0001_initializeMap(){
@@ -125,7 +133,6 @@ public class TestCh11Dictionaries {
         var English2Pirate = GetEnglish2PirateDictionary();
         var pirateLine = TranslateEnglish2Pirate(English2Pirate, english);
         assertEquals(expectedPirate, pirateLine);
-        logger.info("hello");
     }
 // #endregion tests
 }
