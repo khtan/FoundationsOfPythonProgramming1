@@ -38,6 +38,11 @@
           <version>${rest-assured.version}</version>
           <scope>test</scope>
         </dependency>
+        <dependency><!-- junit-jupiter-params -->
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-params</artifactId>
+          <version>${junit.jupiter.version}</version>
+        </dependency>
         <dependency><!-- junit-jupiter-engine -->
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter-engine</artifactId>
