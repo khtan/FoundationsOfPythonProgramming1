@@ -111,12 +111,14 @@ public class TestCh11Dictionaries {
         };
         List<Integer> listAsListImmutable = Arrays.asList(1,2,4); // immutable
         List<Integer> listAsListMutable = new ArrayList<>(Arrays.asList(1,2,4));
-        List<Integer> listCollectionsAddAll = Collections.EMPTY_LIST;
+           List<Integer> listCollectionsAddAll = Collections.EMPTY_LIST;
         Collections.addAll(listCollectionsAddAll = new ArrayList<Integer>(), 1, 2, 4);
+        List<Integer> listCollectionsUnmodifiableList = Collections.unmodifiableList(Arrays.asList(1,2,4));
         // series of asserts
         assertEquals(listDoubleBraces, listAsListImmutable);
         assertEquals(listAsListImmutable, listAsListMutable);
         assertEquals(listAsListMutable, listCollectionsAddAll);
+        assertEquals(listCollectionsAddAll, listCollectionsUnmodifiableList);        
     }
     @Test
     public void test_0002_initializeMap(){
