@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.AbstractMap;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -29,8 +31,9 @@ import static org.hamcrest.Matchers.equalTo;
       The CsvSource format is hokey, ie does not map into any language construct, even like a list or array
       Good thing CsvSource has a delimiter specifier ( default is comma )that I made good use of, and this is
       my first try at parameterized tests
-   3. https://www.baeldung.com/java-initialize-hashmap
-   4. https://www.baeldung.com/java-merge-maps merging 2 maps in Java 8
+   3. https://www.geeksforgeeks.org/initializing-a-list-in-java/
+   4. https://www.baeldung.com/java-initialize-hashmap
+   5. https://www.baeldung.com/java-merge-maps merging 2 maps in Java 8
 */
 public class TestCh11Dictionaries {
     private Logger logger;
@@ -96,9 +99,27 @@ public class TestCh11Dictionaries {
         return String.join(" ", pirateLine);
     }
 // #endregion helpers
-// #region tests
+// #region exploratory
     @Test
-    public void test_0001_initializeMap(){
+    public void test_0001_initializeList(){
+        List<Integer> listDoubleBraces = new ArrayList<Integer>(){ // anonymous class
+            { // initializer block
+               add(1);
+               add(2);
+               add(4);
+            }
+        };
+        List<Integer> listAsListImmutable = Arrays.asList(1,2,4); // immutable
+        List<Integer> listAsListMutable = new ArrayList<>(Arrays.asList(1,2,4));
+        List<Integer> listCollectionsAddAll = Collections.EMPTY_LIST;
+        Collections.addAll(listCollectionsAddAll = new ArrayList<Integer>(), 1, 2, 4);
+        // series of asserts
+        assertEquals(listDoubleBraces, listAsListImmutable);
+        assertEquals(listAsListImmutable, listAsListMutable);
+        assertEquals(listAsListMutable, listCollectionsAddAll);
+    }
+    @Test
+    public void test_0002_initializeMap(){
         Map<Integer, String> mapDoubleBrace = new HashMap<Integer, String>(){{
                 put(1, "one");
                 put(2, "two");
@@ -119,9 +140,11 @@ public class TestCh11Dictionaries {
     @CsvSource({
         "hello, HELLO",
         "world, WORLD"})
-    public void test_0000_CsvSourceTwoStringInputs(String input, String expected) {
+    public void test_0003_CsvSourceTwoStringInputs(String input, String expected) {
         assertEquals(expected, input.toUpperCase());
     }
+// #endregion exploratory
+// #region tests for ch11
     @ParameterizedTest
     @CsvSource(delimiter = '|', value = {
             "Hello boy, how are you?|Avast matey, how be you?",
@@ -134,5 +157,5 @@ public class TestCh11Dictionaries {
         var pirateLine = TranslateEnglish2Pirate(English2Pirate, english);
         assertEquals(expectedPirate, pirateLine);
     }
-// #endregion tests
+// #endregion tests for ch11
 }
