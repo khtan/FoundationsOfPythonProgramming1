@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,6 +38,7 @@ import static org.hamcrest.Matchers.equalTo;
    5. https://www.baeldung.com/java-merge-maps merging 2 maps in Java 8
 */
 public class TestCh11Dictionaries {
+    @SuppressWarnings("unused")
     private Logger logger;
 
     @BeforeEach
@@ -101,7 +104,7 @@ public class TestCh11Dictionaries {
 // #endregion helpers
 // #region exploratory
     @Test
-    public void test_0001_initializeList(){
+    public void test_0001_initializeList(){ // https://www.geeksforgeeks.org/initializing-a-list-in-java/
         List<Integer> listDoubleBraces = new ArrayList<Integer>(){ // anonymous class
             { // initializer block
                add(1);
@@ -111,23 +114,65 @@ public class TestCh11Dictionaries {
         };
         List<Integer> listAsListImmutable = Arrays.asList(1,2,4); // immutable
         List<Integer> listAsListMutable = new ArrayList<>(Arrays.asList(1,2,4));
-           List<Integer> listCollectionsAddAll = Collections.EMPTY_LIST;
+           // List<Integer> listCollectionsAddAll = Collections.EMPTY_LIST; // Type safety: The expression of type List needs unchecked conversion to conform to List<Integer>
+           List<Integer> listCollectionsAddAll = new ArrayList<Integer>();
         Collections.addAll(listCollectionsAddAll = new ArrayList<Integer>(), 1, 2, 4);
         List<Integer> listCollectionsUnmodifiableList = Collections.unmodifiableList(Arrays.asList(1,2,4));
-        // series of asserts
+        // Java 8 stream
+        List<Integer> listStreamOf1 = Stream.of(1,2,4).collect(Collectors.toList());
+        List<Integer> listStreamOf2 = Stream.of(1,2,4).collect(Collectors.toCollection(ArrayList::new));
+        List<Integer> listStreamOf3 = Stream.of(1,2,4).collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+        // Java 9 of, up to 10 elements
+        List<Integer> listOfImmutable = List.of(1,2,4);
+        // series of transitive asserts
         assertEquals(listDoubleBraces, listAsListImmutable);
         assertEquals(listAsListImmutable, listAsListMutable);
         assertEquals(listAsListMutable, listCollectionsAddAll);
-        assertEquals(listCollectionsAddAll, listCollectionsUnmodifiableList);        
+        assertEquals(listCollectionsAddAll, listCollectionsUnmodifiableList);
+        assertEquals(listCollectionsUnmodifiableList, listStreamOf1);
+        assertEquals(listStreamOf1, listStreamOf2);
+        assertEquals(listStreamOf2, listStreamOf3);
+        assertEquals(listStreamOf3, listOfImmutable);
     }
     @Test
-    public void test_0002_initializeMap(){
+    public void test_0002_initializeMap(){ // https://www.baeldung.com/java-initialize-hashmap
+        // 1. double braces
         Map<Integer, String> mapDoubleBrace = new HashMap<Integer, String>(){{
                 put(1, "one");
                 put(2, "two");
                 put(3, "three");
         }};
+        // 2. Java 8 Stream.of() Collectors.toMap
+        Map<Integer, String> mapStreamOf = Stream.of(new Object[][]{
+            {1, "one"},
+            {2, "two"},
+            {3, "three"}
+        }).collect(Collectors.toMap(data -> (Integer) data[0], data -> (String) data[1]));
+        // 3. Java 8 Stream.of() Map.SimpleEntry
+        Map<Integer, String> mapStreamOfEntry = Stream.of(
+            new AbstractMap.SimpleEntry<>(1, "one"),
+            new AbstractMap.SimpleEntry<>(2, "two"),
+            new AbstractMap.SimpleEntry<>(3, "three")
+        ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        // 4. Java 8 Stream.of() Map.SimpleImmutableEntry
+        Map<Integer, String> mapStreamOfImmutableEntry = Stream.of(
+            new AbstractMap.SimpleImmutableEntry<>(1, "one"),
+            new AbstractMap.SimpleImmutableEntry<>(2, "two"),
+            new AbstractMap.SimpleImmutableEntry<>(3, "three")
+        ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        // 5 Java 8 Stream.of() unmodifiableMap -- likely to have performance hit and garbage objects
+        Map<Integer, String> mapStreamOfUnmodifiableMap = Stream.of(
+            new Object[][]{
+                {1, "one"},
+                {2, "two"},
+                {3, "three"}
+            }).collect(Collectors.collectingAndThen(
+                Collectors.toMap(data -> (Integer)data[0], data -> (String)data[1]),
+                Collections::<Integer, String> unmodifiableMap
+            ));
+        // 6. Java 9 Map.of()
         Map<Integer, String> mapImmutableOf = Map.of(1,"one", 2, "two", 3, "three"); // limit of 10 items, lexically dumb bec no indication of which pairs
+        // 7. Java 9 Map.ofEntries()
         Map<Integer, String> mapImmutableOfEntries = Map.ofEntries(
            new AbstractMap.SimpleEntry<Integer, String>(1, "one"),
            new AbstractMap.SimpleEntry<Integer, String>(2, "two"),
@@ -136,7 +181,52 @@ public class TestCh11Dictionaries {
         // series of asserts
         assertEquals(mapDoubleBrace, mapImmutableOf);
         assertEquals(mapImmutableOf, mapImmutableOfEntries);
+        assertEquals(mapImmutableOfEntries, mapStreamOf);
+        assertEquals(mapStreamOf, mapStreamOfEntry);
+        assertEquals(mapStreamOfEntry, mapStreamOfImmutableEntry);
+        assertEquals(mapStreamOfImmutableEntry, mapStreamOfUnmodifiableMap);        
     }
+    @Test
+    public void test_0003_mergeLists(){ // https://www.techiedelight.com/join-two-lists-java/
+        List<Integer> listA = List.of(1,2,4);
+        List<Integer> listB = List.of(3,7,11);
+        List<Integer> eMergedList = List.of(1,2,4,3,7,11);
+        // 1. List.add()
+        List<Integer> list1 = new ArrayList<>();
+        list1.addAll(listA);
+        list1.addAll(listB);
+        assertEquals(eMergedList, list1);
+        // 2. List .add() 
+        List<Integer> list2 = new ArrayList<>(listA);
+        list2.addAll(listB);
+        assertEquals(eMergedList, list2);
+        // 3. Double brace initialization
+        List<Integer> list3 = new ArrayList<Integer>(){{ // wasteful because anonymous class created
+            addAll(listA);
+            addAll(listB);
+        }};
+        assertEquals(eMergedList, list3);
+        // 4. Collections.allAll
+        List<Integer> list4 = new ArrayList<>();
+        Collections.addAll(list4, listA.toArray(new Integer[0]));
+        Collections.addAll(list4, listB.toArray(new Integer[0]));
+        assertEquals(eMergedList, list4);
+        // 5. Java8 Stream.of() + flatMap() + Collector
+        List<Integer> list5 = Stream.of(listA, listB).flatMap(x -> x.stream()).collect(Collectors.toList());
+        assertEquals(eMergedList, list5);
+        // 6. Java8 Steam.of() + Stream.forEach()
+        List<Integer> list6 = new ArrayList<>();
+        Stream.of(listA, listB).forEach(list6::addAll);
+        assertEquals(eMergedList, list6);
+        // 7. Java8 Stream.concat() + Collector
+        List<Integer> list7 = Stream.concat(listA.stream(), listB.stream()).collect(Collectors.toList());
+        assertEquals(eMergedList, list7);
+        // 8. stream, collect, addAll
+        List<Integer> list8 = listA.stream().collect(Collectors.toList());
+        list8.addAll(listB);
+        assertEquals(eMergedList, list8);
+    } // test
+
     // Note: @ValueSource is only for functions with one argument. This is dumb, to create the mechanism for only one input
     @ParameterizedTest
     @CsvSource({
