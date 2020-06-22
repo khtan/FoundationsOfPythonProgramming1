@@ -33,9 +33,9 @@ import static org.hamcrest.Matchers.equalTo;
       The CsvSource format is hokey, ie does not map into any language construct, even like a list or array
       Good thing CsvSource has a delimiter specifier ( default is comma )that I made good use of, and this is
       my first try at parameterized tests
-   3. https://www.geeksforgeeks.org/initializing-a-list-in-java/
-   4. https://www.baeldung.com/java-initialize-hashmap
-   5. https://www.baeldung.com/java-merge-maps merging 2 maps in Java 8
+   3. The multitude of ways to initialize and merge lists, maps shows that there is no single vision in Java
+      hence the diversity. This is much different from Python and C#
+
 */
 public class TestCh11Dictionaries {
     @SuppressWarnings("unused")
@@ -178,13 +178,15 @@ public class TestCh11Dictionaries {
            new AbstractMap.SimpleEntry<Integer, String>(2, "two"),
            new AbstractMap.SimpleEntry<Integer, String>(3, "three")
         );
+        // 7. Guava Iterables (skip)
+        // 8. Apache Commons Collections (skip)
         // series of asserts
         assertEquals(mapDoubleBrace, mapImmutableOf);
         assertEquals(mapImmutableOf, mapImmutableOfEntries);
         assertEquals(mapImmutableOfEntries, mapStreamOf);
         assertEquals(mapStreamOf, mapStreamOfEntry);
         assertEquals(mapStreamOfEntry, mapStreamOfImmutableEntry);
-        assertEquals(mapStreamOfImmutableEntry, mapStreamOfUnmodifiableMap);        
+        assertEquals(mapStreamOfImmutableEntry, mapStreamOfUnmodifiableMap);
     }
     @Test
     public void test_0003_mergeLists(){ // https://www.techiedelight.com/join-two-lists-java/
@@ -227,6 +229,33 @@ public class TestCh11Dictionaries {
         assertEquals(eMergedList, list8);
     } // test
 
+    @Test
+    public void test_0004_mergeMaps(){ // https://www.baeldung.com/java-merge-maps
+        Map<Integer, String> mapA = Map.of(1,"one", 2, "two", 3, "three");
+        Map<Integer, String> mapB = Map.of(4,"four", 5, "five", 6, "six");
+        Map<Integer, String> eMergedMap = Map.of(1,"one", 2, "two", 3, "three",4,"four", 5, "five", 6, "six"); // expected merged map
+    // 1. Map.merge https://www.nurkiewicz.com/2019/03/mapmerge-one-method-to-rule-them-all.html
+        Map<Integer, String> map1 = new HashMap<>(mapA);
+        mapB.forEach((k,v) -> map1.merge(k, v, (v1, v2) -> v1));
+        assertEquals(eMergedMap, map1);
+    // 2. Stream.concat()
+        Map<Integer, String> map2 = Stream.concat(mapA.entrySet().stream(), mapB.entrySet().stream()).
+            collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v1));
+        assertEquals(eMergedMap, map2);
+    // 3. Stream.of()
+        Map<Integer, String> map3 = Stream.of(mapA, mapB).
+            flatMap(map -> map.entrySet().stream()).
+            collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,(v1, v2) -> v1));
+        assertEquals(eMergedMap, map3);
+    // 4. Simple streaming
+        Map<Integer, String> map4 = mapA.entrySet().stream().
+            collect(
+               Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v1, 
+               () -> new HashMap<>(mapB))
+           );
+        assertEquals(eMergedMap, map4);
+    // 5. StreamEx library (skipped)
+    }
     // Note: @ValueSource is only for functions with one argument. This is dumb, to create the mechanism for only one input
     @ParameterizedTest
     @CsvSource({
