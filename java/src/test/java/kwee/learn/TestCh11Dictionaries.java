@@ -250,7 +250,10 @@ public class TestCh11Dictionaries {
     // 4. Simple streaming
         Map<Integer, String> map4 = mapA.entrySet().stream().
             collect(
-               Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (v1, v2) -> v1, 
+               Collectors.toMap(
+               Map.Entry::getKey,
+               Map.Entry::getValue,
+               (v1, v2) -> v1,
                () -> new HashMap<>(mapB))
            );
         assertEquals(eMergedMap, map4);

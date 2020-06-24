@@ -6,12 +6,15 @@ using System.Collections.Generic;
 using Xunit;
 using Xunit.Abstractions;
 using System.Linq;
+using Microsoft.VisualBasic.CompilerServices;
+using FluentAssertions;
 
 namespace XUnitTests
 {
     public class test_ch11_dictionaries
     {
         private readonly ITestOutputHelper output; // helper provides interface for WriteLine only, so not logging per se
+    #region helpers
         private String Capitalize(string input){
             if (!String.IsNullOrEmpty(input)) {
                 if (input.Length == 1)
@@ -56,6 +59,20 @@ namespace XUnitTests
             }
             return String.Join(" ", pirateLine);
         }
+    #endregion helpers
+    #region exploratory
+    [Fact]
+    public void test_0001_initializeList()
+    {       // 1. collection initializer
+            List<int> list1 = new List<int>{ 1, 2, 4 };
+            // 2. Derive from array
+            int[] array = { 1, 2, 4 };
+            List<int> list2 = new List<int>(array);
+            // Series of transitive asserts
+            list1.Should().Equal(list2);
+    }
+    #endregion exploratory
+    #region tests
         public test_ch11_dictionaries(ITestOutputHelper output) { this.output = output;  }
 
         [Theory] // english sentece, pirate sentence
@@ -69,5 +86,6 @@ namespace XUnitTests
             var pirateLine = TranslateEnglish2Pirate(English2Pirate, english);
             Assert.Equal(expectedPirate, pirateLine);
         }// fact
+    #endregion tests
     }// class
 }// namespace
