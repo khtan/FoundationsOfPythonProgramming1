@@ -10,7 +10,7 @@ namespace XUnitTests
         public test_template(ITestOutputHelper output) { this.output = output;  }
 
         [Fact]
-        public void test_1031_helloworld()
+        public void test_0001_helloworld()
         {
             output.WriteLine("hello world");
         }// fact
