@@ -7,10 +7,10 @@ using FluentAssertions;
 
 namespace XUnitTests
 {
-    public class test_prime
+    public class test_prime_emacs
     {
         private readonly ITestOutputHelper output; // helper provides interface for WriteLine only, so not logging per se
-        public test_prime(ITestOutputHelper output) { this.output = output; }
+        public test_prime_emacs(ITestOutputHelper output) { this.output = output; }
         private IEnumerable<int> Primes(int upTo = 10000)
         {
             var ints = Enumerable.Range(2, upTo);
@@ -68,7 +68,7 @@ So, the !Any will return List of falses, ie 5, 3, 2
             var x3 = new List<int> { 2 };
             var b3 = x3.Any(y => 3 % y == 0);
             output.WriteLine($"x3={x3.ToString("x3")} b3={b3}"); // 3 == false
-            var x4 = new List<int> { };
+            var x4 = new List<int> {};
             var b4 = x4.Any(y => 2 % y == 0);
             output.WriteLine($"x4={x4.ToString("x4")} b4={b4}"); // 2 == false
             var primes = ints.Where(
@@ -84,25 +84,22 @@ So, the !Any will return List of falses, ie 5, 3, 2
             var ints = Enumerable.Range(2, upTo);
             var primes = ints.
                 Where(
-                   x =>
-                   {
-                       var b = !ints.TakeWhile(y =>
-                       {
-                           var b2 = y < x;
-                           output.WriteLine($"   takewhile: y:{y} x:{x} b2:{b2}");
-                           return b2;
-                       }).Any(y =>
-                       {
-                           var b1 = x % y == 0;
-                           output.WriteLine($"      any: y:{y} x:{x} b1:{b1}");
-                           return b1;
-                       });
-                       output.WriteLine($"where: x={x} b={b}");
-                       return b;
-                   }
-                                    ).ToList(); // otherwise calling Primes in output will run code again
+                      x => {
+                          var b = !ints.TakeWhile(y => {
+                              var b2 = y < x;
+                              output.WriteLine($"   takewhile: y:{y} x:{x} b2:{b2}");
+                              return b2;
+                          }).Any(y => {
+                              var b1 = x % y == 0;
+                              output.WriteLine($"      any: y:{y} x:{x} b1:{b1}");
+                              return b1;
+                          });
+                          output.WriteLine($"where: x={x} b={b}");
+                          return b;
+                      }
+                      ).ToList(); // otherwise calling Primes in output will run code again
             output.WriteLine(primes.ToString("primes"));
-            primes.Should().Equal(new List<int> { 2, 3, 5 });
+            primes.Should().Equal(new List<int>{2, 3, 5});
         }// fact
         [Fact]
         public void test_0003_log_pipeline()
