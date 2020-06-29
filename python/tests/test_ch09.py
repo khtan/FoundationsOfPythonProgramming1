@@ -212,7 +212,7 @@ def test_9100_ing():
     assert ing1 == ing2
     assert ing2 == ing3
 def test_9101_list_accumulator():
-    # Given the list of numbers, numbs, create a new list of those same numbers increased by 5. 
+    # Given the list of numbers, numbs, create a new list of those same numbers increased by 5.
     # Save this new list to the variable newlist.
     numbs = [5, 10, 15, 20, 25]
     newlist = []
@@ -220,7 +220,7 @@ def test_9101_list_accumulator():
         newlist = newlist + [num +5]
     logger.info(newlist)
 def test_9101_list_accumulatorA():
-    # Now do the same as in the previous problem, but do not create a new list. 
+    # Now do the same as in the previous problem, but do not create a new list.
     # Overwrite the list numbs so that each of the original numbers are increased by 5
     numbs = [5, 10, 15, 20, 25]
     for idx in range(len(numbs)):
@@ -244,7 +244,7 @@ def test_string_format_operator():
 # endregion 9.9 non-mutating methods on strings
 # region 9.15 exercises
 def test_915_1():
-    ''' For each word in the list verbs, add an -ing ending. 
+    ''' For each word in the list verbs, add an -ing ending.
        Overwrite the old list so that verbs has the same words with ing at the end of each one.
     '''
     verbs = ["kayak", "cry", "walk", "eat", "drink", "fly"]
@@ -252,7 +252,7 @@ def test_915_1():
     for idx in range(len(verbs)):
         verbs[idx] = verbs[idx] + "ing"
     logger.info("After: {}".format(verbs))
-    expected = ["kayaking", "crying", "walking", "eating", "drinking", "flying"]    
+    expected = ["kayaking", "crying", "walking", "eating", "drinking", "flying"]
     assert verbs == expected
 def test_915_2():
     ''' In XYZ University, upper level math classes are numbered 300 and up.
@@ -286,7 +286,7 @@ def test_915_2():
     assert len(upper) == 6
     assert len(classes) == len(upper) + len(lower)
 def test_915_3():
-    ''' Starting with the list myList = [76, 92.3, ‘hello’, True, 4, 76], 
+    ''' Starting with the list myList = [76, 92.3, ‘hello’, True, 4, 76],
         write Python statements to do the following:
            Append “apple” and 76 to the list.
            Insert the value “cat” at position 3.
@@ -313,7 +313,7 @@ def test_915_3():
     logger.info("After removing first occurence of 76: {}".format(myList))
     indexOfTrue = myList.index(True)
     myList.pop(indexOfTrue)
-    logger.info("After popping True: {}".format(myList))    
+    logger.info("After popping True: {}".format(myList))
 def test_915_4():
     ''' The module keyword determines if a string is a keyword.
     e.g. keyword.iskeyword(s) where s is a string will return either True or False,
@@ -334,12 +334,12 @@ def test_915_4():
     logger.info("keyword_test : {}".format(keyword_test))
     logger.info("keywords : {}".format(keywords))
 def test_915_5():
-    '''The string module provides sequences of various types of Python characters. 
-    It has an attribute called digits that produces the string ‘0123456789’. 
-    Import the module and assign this string to the variable nums. 
-    Below, we have provided a list of characters called chars. 
-    Using nums and chars, produce a list called is_num that consists of tuples. 
-    The first element of each tuple should be the character from chars, 
+    '''The string module provides sequences of various types of Python characters.
+    It has an attribute called digits that produces the string ‘0123456789’.
+    Import the module and assign this string to the variable nums.
+    Below, we have provided a list of characters called chars.
+    Using nums and chars, produce a list called is_num that consists of tuples.
+    The first element of each tuple should be the character from chars,
     and the second element should be a Boolean that reflects whether or not it is a Python digit.
     '''
     import string
@@ -425,14 +425,14 @@ def test_917_word_lengths():
     assert num_words_list == [3, 5, 5, 5, 6, 4, 3, 9, 4, 3]
 def test_918_acronynm():
     '''
-        Write code that uses the string stored in org and creates an acronym 
-        which is assigned to the variable acro. 
-        Only the first letter of each word should be used, 
-        each letter in the acronym should be a capital letter, 
-        and there should be nothing to separate the letters of the acronym. 
-        Words that should not be included in the acronym are stored in the list stopwords. 
-        For example, if org was assigned the string “hello to world” 
-        then the resulting acronym should be “HW”.    
+        Write code that uses the string stored in org and creates an acronym
+        which is assigned to the variable acro.
+        Only the first letter of each word should be used,
+        each letter in the acronym should be a capital letter,
+        and there should be nothing to separate the letters of the acronym.
+        Words that should not be included in the acronym are stored in the list stopwords.
+        For example, if org was assigned the string “hello to world”
+        then the resulting acronym should be “HW”.
     '''
     stopwords = ['to', 'a', 'for', 'by', 'an', 'am', 'the', 'so', 'it', 'and', "The"]
     org = "The organization for health, safety, and education"
