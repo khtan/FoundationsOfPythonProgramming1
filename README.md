@@ -59,6 +59,9 @@ As the table above shows, I have chosen to always pick the unit test environment
 As this project progressed I learned that it is not sufficient just to know a language and its syntax. It is important
 to learn the libraries available so as to not reinvest the wheel. In particular, the unit testing framework and the assertion libraries are two pieces that should be used as early as possible. Only when all the supporting pieces are in place does it make sense to go deeper into each area, either library or language.
 
+## Improvements
+1. CircleCI: Instead of running all language projects, only build and run the project that the change occurs in.
+
 # References
 * [Live Github](https://github.com/khtan/FoundationsOfPythonProgramming1)
 * [Live CircleCi](https://circleci.com/gh/khtan/FoundationsOfPythonProgramming1)

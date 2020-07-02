@@ -104,7 +104,7 @@ namespace XUnitTests
             return lookup.ToDictionary(item => item.Key, item => item.AsEnumerable());
         }
         #endregion helpers
-        #region testhelpers
+#region testhelpers
         private void TestAnagrams(Func<IEnumerable<string>, IDictionary<string, IEnumerable<string>>> generateAnagrams /* list to dictionary */,
             IEnumerable<string> list /* list of words */, 
             IDictionary<string, IEnumerable<string>> edict /* expected dictionary */)
