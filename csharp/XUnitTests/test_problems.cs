@@ -119,46 +119,6 @@ namespace XUnitTests
             // edict["aet"].Should().Equal(dict["aet"]);
             edict.Should().BeEquivalentTo(dict);
         }
-#if FALSE
-        private void TestAnagrams(IEnumerable<string> list /* list of words */, IDictionary<string, IEnumerable<string>> edict/* expected dictionary */)
-        {
-            var dict = GenerateAnagramsSortString(list);
-            output.WriteLine(JsonConvert.SerializeObject(dict));
-            output.WriteLine(JsonConvert.SerializeObject(edict));
-
-            // Note: edict.Should().Equal(dict)
-            // fails because List comparison is by reference despite documentation
-            // that says comparison is via the Equals, while below works
-            // edict["aet"].Should().Equal(dict["aet"]);
-            edict.Should().BeEquivalentTo(dict);
-
-        }
-
-        private void TestAnagramsB(IEnumerable<string> list /* list of words */, IDictionary<string, IEnumerable<string>> edict/* expected dictionary */){
-            var dict = GenerateAnagramsSortStringLinq(list);
-            output.WriteLine(JsonConvert.SerializeObject(dict));
-            output.WriteLine(JsonConvert.SerializeObject(edict));
-
-            // Note: edict.Should().Equal(dict)
-            // fails because List comparison is by reference despite documentation
-            // that says comparison is via the Equals, while below works
-            // edict["aet"].Should().Equal(dict["aet"]);
-            edict.Should().BeEquivalentTo(dict);
-        }
-
-        private void TestAnagramsC(IEnumerable<string> list /* list of words */, IDictionary<string, IEnumerable<string>> edict/* expected dictionary */)
-        {
-            var dict = GenerateAnagramsByLookup(list);
-            output.WriteLine(JsonConvert.SerializeObject(dict));
-            output.WriteLine(JsonConvert.SerializeObject(edict));
-
-            // Note: edict.Should().Equal(dict)
-            // fails because List comparison is by reference despite documentation
-            // that says comparison is via the Equals, while below works
-            // edict["aet"].Should().Equal(dict["aet"]);
-            edict.Should().BeEquivalentTo(dict);
-        }
-#endif
 #endregion testhelpers
 #region tests
         [Fact]
