@@ -22,20 +22,31 @@ orbs:
    win: circleci/windows@2.2.0
 jobs:
   test_linux_typescript:
-    working_directory: typescript/my-app
+
     docker:
       - image: circleci/node:10-browsers
     steps:
       - checkout
       - restore_cache:
+          working_directory: typescript/my-app
           key: my-app-{{ .Branch }}-{{ checksum "package-lock.json" }}
-      - run: npm install
+      - run:
+          name: npm install
+          working_directory: typescript/my-app
+          command: npm install
       - save-cache:
+          working_directory: typescript/my-app
           key: my-app-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - "node_modules"
-      - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-      - run: npm run e2e -- --protractor-config=e2e/protractor.conf.js
+      - run:
+          name: npm run test
+          working_directory: typescript/my-app
+          command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+      - run:
+          name: npm run e2e
+          working_directory: typescript/my-app
+          command: npm run e2e -- --protractor-config=e2e/protractor.conf.js
   test_linux_java:
     docker:
       - image: circleci/openjdk:jdk-stretch # cimg not yet available
