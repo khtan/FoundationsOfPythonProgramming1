@@ -35,13 +35,13 @@ jobs:
           working_directory: typescript/my-app
           command: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
       - store_test_results:
-          path: src/karma-results
+          path: typescript/my-app/src/karma-results
       - run:
           name: npm run e2e
           working_directory: typescript/my-app
           command: npm run e2e -- --protractor-config=e2e/protractor.conf.js
       - store_test_results:
-          path: e2e/protractor-results
+          path: typescript/my-app/e2e/protractor-results
   test_linux_java:
     docker:
       - image: circleci/openjdk:jdk-stretch # cimg not yet available
