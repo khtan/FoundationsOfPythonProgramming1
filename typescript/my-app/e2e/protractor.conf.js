@@ -23,6 +23,12 @@ exports.config = {
     require('ts-node').register({
       project: require('path').join(__dirname, './tsconfig.e2e.json')
     });
+    let jasmineReporters = require('jasmine-reporters');
+    let junitReporter = new jasmineReporters.JUnitXmlReporter({
+        savePath: 'e2e/protractor-results',
+        consolidateAll: true
+    });
     jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+    jasmine.getEnv().addReporter(junitReporter);
   }
 };

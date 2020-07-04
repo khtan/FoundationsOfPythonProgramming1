@@ -710,3 +710,8 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# unit test results
+karma-results/
+
+# e2e test results
+protractor-results/
