@@ -33,7 +33,7 @@ jobs:
           name: npm install
           working_directory: typescript/my-app
           command: npm install
-      - save-cache:
+      - save_cache:
           working_directory: typescript/my-app
           key: my-app-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
