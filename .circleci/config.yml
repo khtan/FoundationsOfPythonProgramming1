@@ -87,7 +87,7 @@ workflows: # run jobs sequentially
   test_all_platforms:
      jobs:
        - test_linux_typescript
-       - test_linux_java
+       - test_linux_java:
          requires:
            - test-linux-typescript
        - test_linux_dotnet:
