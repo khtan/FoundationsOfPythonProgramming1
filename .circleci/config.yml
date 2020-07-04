@@ -22,8 +22,7 @@ orbs:
    win: circleci/windows@2.2.0
 jobs:
   test_linux_typescript:
-    build:
-      working_directory: typescript/my-app
+    working_directory: typescript/my-app
     docker:
       - image: circleci/node:10-browsers
     steps:
