@@ -145,7 +145,7 @@ namespace XUnitTests
         public void test_0003_anagramsSortStringLinq()
         {
             var list = new List<string> { "eat", "tea", "tan", "ate", "nat", "bat" };
-            list.Reverse(); // Order to values in map will be different, but this does not matter
+            list.Reverse(); // Order to values in map will be different, but this does not matter as the test shows
             IDictionary<string, IEnumerable<string>> edict = new Dictionary<string, IEnumerable<string>>() // expected dictionary
             {
                 { "aet" , new List<string>(){"eat", "tea", "ate"} },
