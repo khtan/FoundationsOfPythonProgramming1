@@ -5,8 +5,8 @@
 describe('hello', () => {
     it('test hello world', () => {
         console.log('hello world!');
-    });
-});
+    }); // it
+}); // describe
 //#endregion helloworld
 //#region getFactorial
 // --------------------------------------------------
@@ -46,5 +46,5 @@ describe('when using getFactorial', () => {
             getFactorial(-10);
         }).toThrow(new Error('There is no factorial for negative numbers'));
     });
-});
+}); // describe
 //#endregion getFactorial
