@@ -33,12 +33,13 @@ CircleCi. There is a noticeable execution time increase when using a Windows VM 
 
 The IDEs listed are what I use in my development as examples. Since they are just source repositories, any IDE will do, so long as you know how to set things up. 
 
-  | Language | CircleCi     | Unit Testing Framework | IDE               |
-  |----------|--------------|------------------------|-------------------|
-  | Python   | Linux Docker | Pytest                 | VS Code           |
-  | C#       | Linux Docker | XUnit, dotnet          | VS Code           |
-  | C#       | Windows VM   | XUnit, dotnet          | VS 2019 Community |
-  | Java     | Linux Docker | Junit4/5 on Maven      | VS Code, IntelliJ |
+  | Language   | CircleCi     | Unit Testing Framework | IDE               |
+  |------------|--------------|------------------------|-------------------|
+  | Python     | Linux Docker | Pytest                 | VS Code           |
+  | C#         | Linux Docker | XUnit, dotnet          | VS Code           |
+  | C#         | Windows VM   | XUnit, dotnet          | VS 2019 Community |
+  | Java       | Linux Docker | Junit4/5 on Maven      | VS Code, IntelliJ |
+  | Typescript | Linux Docker | Karma, Protractor      | VS Code           |
 
 # Best Practices
 ## Pedagogical emphasis
