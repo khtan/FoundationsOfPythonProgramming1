@@ -1,0 +1,14 @@
+* meta
+** startups
+//		#+STARTUP: hidestars	
+#+SEQ_TODO: TODO(t!) START(s!) STUCK(k!) WAIT(w!) | DONE(d!) CANCEL(c!) DEFER(r!) ANSWER(n!)
+* 24.14 project - OMDB and TasteDive
+tastedive https://tastedive.com/read/api
+   As of 2019, tastedive is moving to Qioo
+   But Qioo API is not described
+   Have to use legacy tastedive api for now
+
+omdb www.omdbapi.com
+
+get_movies_from_tastedive(string movieOrartist)
+
