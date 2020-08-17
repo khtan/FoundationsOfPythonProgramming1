@@ -138,4 +138,50 @@ def test_2412_flickr():
         logger.info(url)
     # webbrowser.open(url)
 
-# endregion tests
+def extract_movie_titles(dic):
+    return [d['Name'] for d in dic['Similar']['Results']]
+
+def get_movies_from_tastedive(query, qtype, baseUrl='https://tastedive.com/api/similar', infonum=1, limit=5, key='382398-test-ZF54VD42' ):
+    """
+    The API is described in https://tastedive.com/read/api
+    Adding a / at the end will cause "page not found" error
+
+    Parameters
+    - q: the search query; consists of a series (at least one) of bands, movies, TV shows, podcasts, books, authors and/or games, separated by commas. Sometimes it is useful to specify the type of a certain resource in the query (e.g. if a movie and a book share the same title). You can do this by using the "band:", "movie:", "show:", "podcast:", "book:", "author:" or "game:" operators, for example: "band:underworld, movie:harry potter, book:trainspotting". Don't forget to encode this parameter.
+    - type: query type, specifies the desired type of results. It can be one of the following: music, movies, shows, podcasts, books, authors, games. If not specified, the results can have mixed types.
+    - info: when set to 1, additional information is provided for the recommended items, like a description and a related Youtube clip (when available). Default is 0.
+    - limit: maximum number of recommendations to retrieve. Default is 20.
+    - k: Your API access key.
+    - callback: add when using JSONP, to specify the callback function.
+
+    This is the full rest calling function to encapsulate the api/similar endpoint with defaults for
+    info, limit, key values
+    """
+    kval_pairs = {
+        'info' : infonum, 'limit': 5, 'k': key,
+        'q' : query, 'type': qtype
+    }
+    response = requests.get(baseUrl, params=kval_pairs)
+    # response_map = response.json()
+    # return [d['Name'] for d in response_map['Similar']['Results'] if d['Type'] == 'movie']
+    return json.loads(response.text)
+
+def get_movies_test_helper(artistOrMovie, qtype):
+    ml = get_movies_from_tastedive(artistOrMovie, qtype)
+    logger.info("len={}".format(len(ml)))
+    for m in ml:
+       logger.info(m)
+    return ml
+
+def test_2414_black_panther():
+    # movie list
+    mlA = extract_movie_titles(get_movies_test_helper('black panther', 'movie'))
+    mlB = extract_movie_titles(get_movies_test_helper('black panther', 'movies'))
+    assert 5 == len(mlA)
+    assert 5 == len(mlB)
+    assert mlA == mlB
+def test_2414_bridesmaids():
+    ml = extract_movie_titles(get_movies_test_helper('Bridesmaids', 'movie'))
+    assert 5 == len(ml)
+
+# endregion tests for xx.x

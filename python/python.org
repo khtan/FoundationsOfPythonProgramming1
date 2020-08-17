@@ -3,12 +3,39 @@
 //		#+STARTUP: hidestars	
 #+SEQ_TODO: TODO(t!) START(s!) STUCK(k!) WAIT(w!) | DONE(d!) CANCEL(c!) DEFER(r!) ANSWER(n!)
 * 24.14 project - OMDB and TasteDive
-tastedive https://tastedive.com/read/api
-   As of 2019, tastedive is moving to Qioo
-   But Qioo API is not described
-   Have to use legacy tastedive api for now
+** tastedive
+ tastedive https://tastedive.com/read/api
+    As of 2019, tastedive is moving to Qioo
+    But Qioo API is not described
+    Have to use legacy tastedive api for now
+  [[https://tastedive-api-documentation.readthedocs.io/en/latest/endpoints.html#parameters][tastedive documentation]]
+  [[https://readthedocs.org/projects/tastedive-api-documentation/downloads/pdf/latest/][tastedive pdf]]
+** omdb
+ omdb www.omdbapi.com
+ 
+ get_movies_from_tastedive(string movieOrartist)
+** A solution can be found in https://gist.github.com/cibofdevs/4ca80f401792e7728e71565b4b3a4fdf
+It shows that TasteDive api changed query format
+"type" = "movies" to "type" = "movie"
 
-omdb www.omdbapi.com
+The q is whether the API returns a version number. Probably not
 
-get_movies_from_tastedive(string movieOrartist)
+Also, the FOPP chapter wizard does not compile free functions. The test function and cache names are hardcoded.
 
+* DONE [[https://github.com/microsoft/vscode-python/issues/10847][Unable to debug pytnon tests (duplicate entries in "env"]]
+  - State "DONE"       from              [2020-08-16 Sun 21:29]
+Soln was to update the launch.json, replacing "request" : "launch"
+with "request" : "test"
+
+* START Observation: VS Code very quickly lose track of indentation of python code, leading to spurious errors
+  - State "START"      from              [2020-08-17 Mon 14:12]
+Will see some "~" in the VS editor but even if they are deleted, the Problems tab still shows mis-compilation
+Not sure what's this caused by
+Closing the project and re-opening will recover the editor in better mode
+* test_ch24_internet_api.py0
+This is an example of the .py code suddenly failing to compile.
+Turns out it is because the signature of the fuction being called 'get_movies...'
+was incorrectly handled by the test case.
+
+This is probably a situation where python type annotations will help.
+Otherwise the debugging is quite silly because perfectly good code suddenly fails.
