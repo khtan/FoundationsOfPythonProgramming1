@@ -34,6 +34,69 @@ logger = logging.getLogger(__name__)
 flickr_key = '464b86270211da70af8a940c0ed6c219'
 # endregion globals
 # region helpers
+def get_rhymes(word):
+    baseurl = "https://api.datamuse.com/words"
+    params_diction = {}
+    params_diction["rel_rhy"] = word
+    params_diction["max"] = 3
+    resp = requests.get(baseurl, params=params_diction)
+    word_ds = resp.json()
+    return [d['word'] for d in word_ds]
+
+def get_flickr_data(tags_string):
+    baseurl = "https://api.flickr.com/services/rest/"
+    params_diction = {}
+    params_diction["api_key"] = flickr_key # from the above global variable
+    params_diction["tags"] = tags_string # must be a comma separated string to work correctly
+    params_diction["tag_mode"] = "all"
+    params_diction["method"] = "flickr.photos.search"
+    params_diction["per_page"] = 5
+    params_diction["media"] = "photos"
+    params_diction["format"] = "json"
+    params_diction["nojsoncallback"] = 1
+    # flickr_resp = requests_with_caching.get(baseurl, params = params_diction, permanent_cache_file="flickr_cache.txt")
+    flickr_resp = requests.get(baseurl, params = params_diction)
+    # Useful for debugging: print the url! Uncomment the below line to do so.
+    # Add a assert check here
+    assert flickr_resp.status_code == 200
+    logger.info("get_flickr_data: url == {}".format(flickr_resp.url)) # Paste the result into the browser to check it out...
+    return flickr_resp.json()
+
+def extract_movie_titles(dic):
+    return [d['Name'] for d in dic['Similar']['Results']]
+
+def get_movies_from_tastedive(query, qtype, baseUrl='https://tastedive.com/api/similar', infonum=1, limit=5, key='382398-test-ZF54VD42' ):
+    """
+    The API is described in https://tastedive.com/read/api
+    Adding a / at the end will cause "page not found" error
+
+    Parameters
+    - q: the search query; consists of a series (at least one) of bands, movies, TV shows, podcasts, books, authors and/or games, separated by commas. Sometimes it is useful to specify the type of a certain resource in the query (e.g. if a movie and a book share the same title). You can do this by using the "band:", "movie:", "show:", "podcast:", "book:", "author:" or "game:" operators, for example: "band:underworld, movie:harry potter, book:trainspotting". Don't forget to encode this parameter.
+    - type: query type, specifies the desired type of results. It can be one of the following: music, movies, shows, podcasts, books, authors, games. If not specified, the results can have mixed types.
+    - info: when set to 1, additional information is provided for the recommended items, like a description and a related Youtube clip (when available). Default is 0.
+    - limit: maximum number of recommendations to retrieve. Default is 20.
+    - k: Your API access key.
+    - callback: add when using JSONP, to specify the callback function.
+
+    This is the full rest calling function to encapsulate the api/similar endpoint with defaults for
+    info, limit, key values
+    """
+    kval_pairs = {
+        'info' : infonum, 'limit': 5, 'k': key,
+        'q' : query, 'type': qtype
+    }
+    response = requests.get(baseUrl, params=kval_pairs)
+    # response_map = response.json()
+    # return [d['Name'] for d in response_map['Similar']['Results'] if d['Type'] == 'movie']
+    return json.loads(response.text)
+
+def get_movies_test_helper(artistOrMovie, qtype):
+    ml = get_movies_from_tastedive(artistOrMovie, qtype)
+    logger.info("len={}".format(len(ml)))
+    for m in ml:
+       logger.info(m)
+    return ml
+
 # endregion helpers
 # region tests for xx.x
 def test_2461_get(): # 24.6.1
@@ -80,15 +143,6 @@ def test_2471_requests_with_caching():
     res = requests_with_caching.get("https://api.datamuse.com/words?rel_rhy=funny", permanent_cache_file="datamuse_cache.txt")
 '''
 
-def get_rhymes(word):
-    baseurl = "https://api.datamuse.com/words"
-    params_diction = {}
-    params_diction["rel_rhy"] = word
-    params_diction["max"] = 3
-    resp = requests.get(baseurl, params=params_diction)
-    word_ds = resp.json()
-    return [d['word'] for d in word_ds]
-
 def test_2482_test_get_rhymes(): # 24.8.2
     rhymes = get_rhymes("funny")
     erhymes = ['money', 'honey', 'sunny']
@@ -104,25 +158,6 @@ def test_2411_itunes(): # 24.11
     for r in py_data['results']:
         logger.info(r['trackName'])
 
-def get_flickr_data(tags_string):
-    baseurl = "https://api.flickr.com/services/rest/"
-    params_diction = {}
-    params_diction["api_key"] = flickr_key # from the above global variable
-    params_diction["tags"] = tags_string # must be a comma separated string to work correctly
-    params_diction["tag_mode"] = "all"
-    params_diction["method"] = "flickr.photos.search"
-    params_diction["per_page"] = 5
-    params_diction["media"] = "photos"
-    params_diction["format"] = "json"
-    params_diction["nojsoncallback"] = 1
-    # flickr_resp = requests_with_caching.get(baseurl, params = params_diction, permanent_cache_file="flickr_cache.txt")
-    flickr_resp = requests.get(baseurl, params = params_diction)
-    # Useful for debugging: print the url! Uncomment the below line to do so.
-    # Add a assert check here
-    assert flickr_resp.status_code == 200
-    logger.info("get_flickr_data: url == {}".format(flickr_resp.url)) # Paste the result into the browser to check it out...
-    return flickr_resp.json()
-
 def test_2412_flickr():
     # https://www.flickr.com/services/apps/about/ => app garden to showcase applications
     result_river_mts = get_flickr_data("river,mountains")
@@ -137,41 +172,6 @@ def test_2412_flickr():
         url = 'https://www.flickr.com/photos/{}/{}'.format(owner, photo_id)
         logger.info(url)
     # webbrowser.open(url)
-
-def extract_movie_titles(dic):
-    return [d['Name'] for d in dic['Similar']['Results']]
-
-def get_movies_from_tastedive(query, qtype, baseUrl='https://tastedive.com/api/similar', infonum=1, limit=5, key='382398-test-ZF54VD42' ):
-    """
-    The API is described in https://tastedive.com/read/api
-    Adding a / at the end will cause "page not found" error
-
-    Parameters
-    - q: the search query; consists of a series (at least one) of bands, movies, TV shows, podcasts, books, authors and/or games, separated by commas. Sometimes it is useful to specify the type of a certain resource in the query (e.g. if a movie and a book share the same title). You can do this by using the "band:", "movie:", "show:", "podcast:", "book:", "author:" or "game:" operators, for example: "band:underworld, movie:harry potter, book:trainspotting". Don't forget to encode this parameter.
-    - type: query type, specifies the desired type of results. It can be one of the following: music, movies, shows, podcasts, books, authors, games. If not specified, the results can have mixed types.
-    - info: when set to 1, additional information is provided for the recommended items, like a description and a related Youtube clip (when available). Default is 0.
-    - limit: maximum number of recommendations to retrieve. Default is 20.
-    - k: Your API access key.
-    - callback: add when using JSONP, to specify the callback function.
-
-    This is the full rest calling function to encapsulate the api/similar endpoint with defaults for
-    info, limit, key values
-    """
-    kval_pairs = {
-        'info' : infonum, 'limit': 5, 'k': key,
-        'q' : query, 'type': qtype
-    }
-    response = requests.get(baseUrl, params=kval_pairs)
-    # response_map = response.json()
-    # return [d['Name'] for d in response_map['Similar']['Results'] if d['Type'] == 'movie']
-    return json.loads(response.text)
-
-def get_movies_test_helper(artistOrMovie, qtype):
-    ml = get_movies_from_tastedive(artistOrMovie, qtype)
-    logger.info("len={}".format(len(ml)))
-    for m in ml:
-       logger.info(m)
-    return ml
 
 def test_2414_black_panther():
     # movie list
