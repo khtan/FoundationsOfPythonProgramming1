@@ -42,7 +42,6 @@ def get_rhymes(word):
     resp = requests.get(baseurl, params=params_diction)
     word_ds = resp.json()
     return [d['word'] for d in word_ds]
-
 def get_flickr_data(tags_string):
     baseurl = "https://api.flickr.com/services/rest/"
     params_diction = {}
@@ -82,7 +81,7 @@ def get_movies_from_tastedive(query, qtype, baseUrl='https://tastedive.com/api/s
     info, limit, key values
     """
     kval_pairs = {
-        'info' : infonum, 'limit': 5, 'k': key,
+        'info' : infonum, 'limit': limit, 'k': key,
         'q' : query, 'type': qtype
     }
     response = requests.get(baseUrl, params=kval_pairs)
@@ -96,6 +95,17 @@ def get_movies_test_helper(artistOrMovie, qtype):
     for m in ml:
        logger.info(m)
     return ml
+
+def get_related_titles(listOfMovies):
+    setOfMovies = set()
+    for movie in listOfMovies:
+        extractedListTitles = extract_movie_titles(get_movies_from_tastedive(movie, "movies"))
+        logger.info("{} => {}".format(movie, extractedListTitles))
+        setOfMovies = setOfMovies.union(set(extractedListTitles))
+    return list(setOfMovies)
+
+def get_movie_data(movieName):
+    return None
 
 # endregion helpers
 # region tests for xx.x
@@ -183,5 +193,15 @@ def test_2414_black_panther():
 def test_2414_bridesmaids():
     ml = extract_movie_titles(get_movies_test_helper('Bridesmaids', 'movie'))
     assert 5 == len(ml)
+
+def test_2421_related_titles_disjoint():
+    ml = get_related_titles(["Black Panther", "Captain Marvel"])
+    logger.info(ml)
+    assert 10 == len(ml)
+
+def test_2421_related_titles_overlap():
+    ml = get_related_titles(["Black Panther", "Thor: Ragnarok"])
+    logger.info(ml)
+    assert 7 == len(ml)    
 
 # endregion tests for xx.x
