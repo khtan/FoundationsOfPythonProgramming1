@@ -104,8 +104,23 @@ def get_related_titles(listOfMovies):
         setOfMovies = setOfMovies.union(set(extractedListTitles))
     return list(setOfMovies)
 
-def get_movie_data(movieName):
-    return None
+def get_movie_from_omdb_by_title(title, mtype = "movie", baseUrl = "http://www.omdbapi.com", plottype = "short", returntype = "json", apiversion = "1", key = "4fc978d"):
+    kval_pairs = {'t' : title, 'type' : mtype, 'plot' : plottype, 'r': returntype, 'v': apiversion, 'apikey' : key}
+    response = requests.get(baseUrl, params=kval_pairs)
+    return json.loads(response.text)
+
+def get_movie_data(movieTitle):
+    return get_movie_from_omdb_by_title(movieTitle)
+
+def get_movie_rating(movieDb):
+    # Is there a simpler way using json filtering?
+    rList = movieDb["Ratings"]
+    rating = 0
+    for r in rList:
+        if r["Source"] == 'Rotten Tomatoes':
+            rating = float(r["Value"].strip('%'))/100
+            break
+    return rating
 
 # endregion helpers
 # region tests for xx.x
@@ -204,4 +219,10 @@ def test_2421_related_titles_overlap():
     logger.info(ml)
     assert 7 == len(ml)    
 
+def test_2422_rating():
+    movieTitle = "Black Panther"
+    rating = get_movie_rating(get_movie_data(movieTitle))
+    logger.info("Rating for {0} = {1}".format(movieTitle, rating))
+    assert 0.96 == rating
+    
 # endregion tests for xx.x
