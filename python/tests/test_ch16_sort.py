@@ -98,4 +98,24 @@ def test_1651_sort_count_with_ties_dictionary():
     d = {"E": 2, "F": 1, "B": 2, "A":2, "D":4, "I": 2, "C":1}
     for k in sorted(d.keys(), key=lambda k: (-d[k], k), reverse=False):
         logger.info("{} -> {}".format(k, (d[k])))
+
+def sort_dictionary(inputD, sortFn):
+    return sorted(inputD.items(), key = sortFn)
+
+def test_sort_dictionary():
+    orders = { 
+    'cappucino': 54, 
+    'latte': 48,
+    'espresso': 54,
+    'americano': 48,
+    'cortado': 41
+    }
+    # x[0] is the key, x[1] is the value
+    sort1 = sorted(orders.items(), key = lambda item: item[1])
+    logger.info("sort1: {}".format(sort1))
+    sort2 = sorted(orders.items(), key = lambda item: orders[item[0]])
+    logger.info("sort2: {}".format(sort2))
+    sort3 = sort_dictionary(orders, lambda item: item[1])
+    logger.info("sort3: {}".format(sort3))
+
 # endregion tests
