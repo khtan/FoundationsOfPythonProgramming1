@@ -102,20 +102,46 @@ def test_1651_sort_count_with_ties_dictionary():
 def sort_dictionary(inputD, sortFn):
     return sorted(inputD.items(), key = sortFn)
 
+def string_cmp(a,b):
+    if a < b:
+        return -1
+    elif a > b:
+        return 1
+    else:
+        return 0
+
+def reverse_string_cmp(a,b):
+    if a < b:
+        return 1
+    elif a > b:
+        return -1
+    else:
+        return 0
 def test_sort_dictionary():
     orders = { 
-    'cappucino': 54, 
     'latte': 48,
     'espresso': 54,
     'americano': 48,
-    'cortado': 41
+    'cortado': 41,
+    'cappucino': 54
     }
     # x[0] is the key, x[1] is the value
-    sort1 = sorted(orders.items(), key = lambda item: item[1])
+    sort1 = sorted(orders.items(), key = lambda item: (item[1], item[0]))
     logger.info("sort1: {}".format(sort1))
     sort2 = sorted(orders.items(), key = lambda item: orders[item[0]])
     logger.info("sort2: {}".format(sort2))
     sort3 = sort_dictionary(orders, lambda item: item[1])
     logger.info("sort3: {}".format(sort3))
 
+def test_reverse_sort_strings():
+    # https://stackoverflow.com/questions/55866762/how-to-sort-a-list-of-strings-in-reverse-order-without-using-reverse-true-parame
+    listA = ['aaa', 'ccc', 'bbb']
+    sortA = sorted(listA)
+    sortB = sorted(listA, reverse=True)
+    logger.info("sortA: {}".format(sortA))
+    logger.info("sortB: {}".format(sortB))
+    sortC = sorted(listA, key=functools.cmp_to_key(string_cmp))
+    logger.info("sortC: {}".format(sortC))
+    sortD = sorted(listA, key=functools.cmp_to_key(reverse_string_cmp))
+    logger.info("sortD: {}".format(sortD))
 # endregion tests

@@ -3,6 +3,7 @@ import logging
 import pytest
 import requests
 import json
+import functools
 
 ''' Notes Ch24 Internet APIs
 Meta
@@ -21,7 +22,7 @@ Meta
      requestURL wrapper to return url shoudl things go wrong
 
 24.13 unicode for non-english charactesr
-    In Py3, all strings are unicode. 
+    In Py3, all strings are unicode.
     Unicode is 1 to 4 bytes per symbol
     UTF-8
     content-type == application/json; charset=utf8
@@ -122,6 +123,30 @@ def get_movie_rating(movieDb):
             break
     return rating
 
+def movieCmp(a,b):
+    if a[1] < b[1]:
+        return -1
+    elif a[1] > b[1]:
+        return 1
+    else:
+        if a[0] < b[0]:
+            return -1
+        if a[0] > b[0]:
+            return 1
+        else:
+            return 0
+
+def get_sorted_recommendations(listOfMovies):
+    mList = get_related_titles(listOfMovies)
+    movieRatings = {}
+    for m in mList:
+        r = get_movie_rating(get_movie_data(m))
+        movieRatings[m] = r
+    logger.info("movieRatings: {}".format(movieRatings))
+    # sortedRecommendations = sorted(movieRatings.items(), key = lambda item: item[1], reverse = True)
+    sortedRecommendations = sorted(movieRatings.items(), key = functools.cmp_to_key(movieCmp), reverse = True)
+    return [item[0] for item in sortedRecommendations]
+
 # endregion helpers
 # region tests for xx.x
 def test_2461_get(): # 24.6.1
@@ -217,12 +242,39 @@ def test_2421_related_titles_disjoint():
 def test_2421_related_titles_overlap():
     ml = get_related_titles(["Black Panther", "Thor: Ragnarok"])
     logger.info(ml)
-    assert 7 == len(ml)    
+    assert 7 == len(ml)
 
 def test_2422_rating():
     movieTitle = "Black Panther"
     rating = get_movie_rating(get_movie_data(movieTitle))
     logger.info("Rating for {0} = {1}".format(movieTitle, rating))
     assert 0.96 == rating
-    
+
+def test_243_sorted_recommendationsA():
+    movieList=["Black Panther"]
+    sRecom = get_sorted_recommendations(movieList)
+    logger.info("Recommendations for {0}: {1}".format(movieList, sRecom))
+    expectedList = ['Thor: Ragnarok', 'Spider-Man: Homecoming', 'Avengers: Infinity War', 'Deadpool 2', 'Ready Player One']
+    assert expectedList == sRecom
+
+def test_243_sorted_recommendationsB():
+    movieList=["Black Panther", "Thor: Ragnarok"]
+    sRecom = get_sorted_recommendations(movieList)
+    logger.info("Recommendations for {0}: {1}".format(movieList, sRecom))
+    expectedList = ['Thor: Ragnarok', 'Spider-Man: Homecoming', 'Guardians Of The Galaxy Vol. 2','Avengers: Infinity War', 'Deadpool 2', 'Ready Player One', 'Justice League']    
+    assert expectedList == sRecom
+
+def test_xxx():
+    movieRatings = {'Ready Player One': 0.72, 'Thor: Ragnarok': 0.93, 'Avengers: Infinity War': 0.85, 'Deadpool 2': 0.84, 'Spider-Man: Homecoming': 0.92}
+    logger.info("movieRatings={}".format(movieRatings))
+    sMovies = sorted(movieRatings.items(), key = lambda item: item[1], reverse = True)
+    logger.info("sMovies={}".format(sMovies))
+
+def test_sorted_recommendations():
+    # Checks that if there is a tie, the movie title is in reverse alpha order
+    movieRatings = {'Ready Player One': 0.72, 'Thor: Ragnarok': 0.92, 'Avengers: Infinity War': 0.85, 'Deadpool 2': 0.72, 'Spider-Man: Homecoming': 0.92}
+    sortedRecommendations = sorted(movieRatings.items(), key = functools.cmp_to_key(movieCmp), reverse = True)
+    logger.info("sortedRecommendations={}".format(sortedRecommendations))
+    expectedRatings = [('Thor: Ragnarok', 0.92), ('Spider-Man: Homecoming', 0.92), ('Avengers: Infinity War', 0.85), ('Ready Player One', 0.72), ('Deadpool 2', 0.72)]
+    assert expectedRatings == sortedRecommendations
 # endregion tests for xx.x
