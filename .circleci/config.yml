@@ -91,10 +91,7 @@ workflows: # run jobs sequentially
   version: 2.1
   test_all_platforms:
      jobs:
-       # - test_linux_typescript
        - test_linux_java:
-#           requires:
-#             - test_linux_typescript
        - test_linux_dotnet:
            requires:
              - test_linux_java
