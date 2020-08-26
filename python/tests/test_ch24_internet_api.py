@@ -261,7 +261,7 @@ def test_243_sorted_recommendationsB():
     movieList=["Black Panther", "Thor: Ragnarok"]
     sRecom = get_sorted_recommendations(movieList)
     logger.info("Recommendations for {0}: {1}".format(movieList, sRecom))
-    expectedList = ['Thor: Ragnarok', 'Spider-Man: Homecoming', 'Guardians Of The Galaxy Vol. 2','Avengers: Infinity War', 'Deadpool 2', 'Ready Player One', 'Justice League']    
+    expectedList = ['Thor: Ragnarok', 'Spider-Man: Homecoming', 'Guardians Of The Galaxy Vol. 2','Avengers: Infinity War', 'Deadpool 2', 'Ready Player One', 'Justice League']
     assert expectedList == sRecom
 
 def test_xxx():
