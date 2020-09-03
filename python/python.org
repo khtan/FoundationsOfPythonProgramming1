@@ -39,3 +39,6 @@ was incorrectly handled by the test case.
 
 This is probably a situation where python type annotations will help.
 Otherwise the debugging is quite silly because perfectly good code suddenly fails.
+* Python 3 project : pillow, tessaract
+** For FoundationsOfPythonProgramming, see if I can re-use
+** venv/p38 needs to add some libraries
