@@ -86,6 +86,10 @@ def test_column_sheet_brightness():
     contact_sheet = contact_sheet.resize((160,900))
     contact_sheet.show()
 
+def AddTextToImage(sourceImage, textLocation, textValue, fillValue, alignValue, fontObject):
+    drawing = ImageDraw.Draw(sourceImage)
+    drawing.text(textLocation, textValue, fill=fillValue, align=alignValue, font=fontObject)
+
 def test_column_sheet_annotated_brightness():
     file="..\data\msi_recruitment.gif"
     gif_image=Image.open(file)
@@ -96,8 +100,7 @@ def test_column_sheet_annotated_brightness():
     for i in range(0,10):
         brightness = i/10;
         e_image = enhancer.enhance(brightness)
-        drawing = ImageDraw.Draw(e_image)
-        drawing.text((200,10), "brightness={}".format(brightness), fill = 'black', aligh = 'left', font = font_object)
+        AddTextToImage(e_image, (200,10), "brightness={}".format(brightness), 'black', 'left', font_object)
         images.append(e_image)
     first_image = images[0]
     contact_sheet = Image.new(first_image.mode, (first_image.width, 10 * first_image.height))
@@ -130,13 +133,26 @@ def test_grid_sheet_brightness():
     contact_sheet.show()
 
 def test_grid_annotated_sheet_brightness():
+    ''' 1. Annotation is added to the picture
+        2. This is different from assignment where annotation is a small rectangle added to the picture
+           This method might be better because it does not alter the original image
+           However, the structure of processing images will have to change
+    '''
     file="..\data\msi_recruitment.gif"
     gif_image=Image.open(file)
+    gif_height = gif_image.height
+    gif_width = gif_image.width
+    logger.info("gheight={}".format(gif_height))
+    gif_width = gif_image.width
     rgb_image=gif_image.convert('RGB')
     enhancer = ImageEnhance.Brightness(rgb_image)
     images = []
+    font_object = ImageFont.truetype('../data/fanwood-webfont.ttf', 40)
     for i in range(0,10):
-        images.append(enhancer.enhance(i/10))
+        brightness = i/10;
+        e_image = enhancer.enhance(brightness)
+        AddTextToImage(e_image, (int(gif_width * 0.1), int(gif_height * 0.9) ), "brightness={}".format(brightness), 'yellow', 'left', font_object)
+        images.append(e_image)
     first_image = images[0]
     contact_sheet = Image.new(first_image.mode, (first_image.width *3, first_image.height *3))
     x=0
