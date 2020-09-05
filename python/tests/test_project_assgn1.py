@@ -4,11 +4,17 @@ import sys
 import logging
 import pytest
 import io
+from enum import Enum
 from PIL import Image
 from PIL import ImageFilter
 from PIL import ImageEnhance
 from PIL import ImageDraw
 from PIL import ImageFont
+
+class Color(Enum):
+    red = 0
+    green = 1
+    blue = 2
 
 # pytest.skip("skipping project_assgn1 tests, currently will show images and wait", allow_module_level=True) # currently using show to display pictures
 
@@ -140,8 +146,7 @@ def test_grid_annotated_sheet_brightness():
     '''
     file="..\data\msi_recruitment.gif"
     gif_image=Image.open(file)
-    gif_height = gif_image.height
-    gif_width = gif_image.width
+    (gif_width, gif_height) = gif_image.size
     logger.info("gheight={}".format(gif_height))
     gif_width = gif_image.width
     rgb_image=gif_image.convert('RGB')
@@ -158,6 +163,40 @@ def test_grid_annotated_sheet_brightness():
     x=0
     y=0
     for img in images[1:]:
+        contact_sheet.paste(img, (x, y))
+        if x + first_image.width == contact_sheet.width:
+            x = 0
+            y = y + first_image.height
+        else:
+            x = x + first_image.width
+    contact_sheet = contact_sheet.resize((int(contact_sheet.width/2), int(contact_sheet.height/2)))
+    contact_sheet.show()
+
+def test_grid_annotated_sheet_color():
+    ''' 1. Full logic in loops
+    '''
+    file="..\data\msi_recruitment.gif"
+    gif_image=Image.open(file)
+    (gif_width, gif_height) = gif_image.size
+    logger.info("gheight={}".format(gif_height))
+    gif_width = gif_image.width
+    rgb_image=gif_image.convert('RGB')
+    R, G, B = 0, 1, 2
+    images = []
+    font_object = ImageFont.truetype('../data/fanwood-webfont.ttf', 40)
+    for color in Color:
+        for intensity in (0.1, 0.5, 0.9):
+           bands = rgb_image.split()
+           out = bands[color.value].point(lambda i: i * intensity )
+           bands[color.value].paste(out, None)
+           e_image = Image.merge('RGB', bands)
+           AddTextToImage(e_image, (int(gif_width * 0.1), int(gif_height * 0.9) ), "c={} i={}".format(color, intensity), 'yellow', 'left', font_object)
+           images.append(e_image)
+    first_image = images[0]
+    contact_sheet = Image.new(first_image.mode, (first_image.width *3, first_image.height *3))
+    x=0
+    y=0
+    for img in images:
         contact_sheet.paste(img, (x, y))
         if x + first_image.width == contact_sheet.width:
             x = 0
