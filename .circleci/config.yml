@@ -64,7 +64,7 @@ jobs:
       - checkout
       - run:
           name: Install Pytest
-          command: pip install --user pytest pytest-mock requests
+          command: pip install --user pytest pytest-mock requests pillow
       - run:
           name: Check Pytest
           command: ./manage.py test
