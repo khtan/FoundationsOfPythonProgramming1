@@ -16,7 +16,7 @@ class Color(Enum):
     green = 1
     blue = 2
 
-# pytest.skip("skipping project_assgn1 tests, currently will show images and wait", allow_module_level=True) # currently using show to display pictures
+pytest.skip("skipping project_assgn1 tests, currently will show images and wait", allow_module_level=True) # currently using show to display pictures
 
 # from IPython.display import display
 ''' Notes
