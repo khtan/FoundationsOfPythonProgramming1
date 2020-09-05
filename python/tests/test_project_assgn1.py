@@ -29,6 +29,19 @@ class Color(Enum):
 logger = logging.getLogger(__name__)
 # endregion globals
 # region helpers
+def AddTextToImage(sourceImage, textLocation, textValue, fillValue, alignValue, fontObject):
+    drawing = ImageDraw.Draw(sourceImage)
+    drawing.text(textLocation, textValue, fill=fillValue, align=alignValue, font=fontObject)
+
+def EnhanceImageBrightness(enhancer, brightness):
+    return enhancer.enhance(brightness)
+
+def EnhanceImageColor(rgb_image, color, intensity):
+    bands = rgb_image.split()
+    out = bands[color.value].point(lambda i: i * intensity)
+    bands[color.value].paste(out, None)
+    return Image.merge('RGB', bands)
+
 # endregion helpers
 # region tests for xx.x
 def test_simple_show():
@@ -92,10 +105,6 @@ def test_column_sheet_brightness():
     contact_sheet = contact_sheet.resize((160,900))
     contact_sheet.show()
 
-def AddTextToImage(sourceImage, textLocation, textValue, fillValue, alignValue, fontObject):
-    drawing = ImageDraw.Draw(sourceImage)
-    drawing.text(textLocation, textValue, fill=fillValue, align=alignValue, font=fontObject)
-
 def test_column_sheet_annotated_brightness():
     file="..\data\msi_recruitment.gif"
     gif_image=Image.open(file)
@@ -105,7 +114,7 @@ def test_column_sheet_annotated_brightness():
     font_object = ImageFont.truetype('../data/fanwood-webfont.ttf', 40)
     for i in range(0,10):
         brightness = i/10;
-        e_image = enhancer.enhance(brightness)
+        e_image = EnhanceImageBrightness(enhancer, brightness)
         AddTextToImage(e_image, (200,10), "brightness={}".format(brightness), 'black', 'left', font_object)
         images.append(e_image)
     first_image = images[0]
@@ -155,7 +164,7 @@ def test_grid_annotated_sheet_brightness():
     font_object = ImageFont.truetype('../data/fanwood-webfont.ttf', 40)
     for i in range(0,10):
         brightness = i/10;
-        e_image = enhancer.enhance(brightness)
+        e_image = EnhanceImageBrightness(enhancer, brightness)
         AddTextToImage(e_image, (int(gif_width * 0.1), int(gif_height * 0.9) ), "brightness={}".format(brightness), 'yellow', 'left', font_object)
         images.append(e_image)
     first_image = images[0]
@@ -181,15 +190,11 @@ def test_grid_annotated_sheet_color():
     logger.info("gheight={}".format(gif_height))
     gif_width = gif_image.width
     rgb_image=gif_image.convert('RGB')
-    R, G, B = 0, 1, 2
     images = []
     font_object = ImageFont.truetype('../data/fanwood-webfont.ttf', 40)
     for color in Color:
         for intensity in (0.1, 0.5, 0.9):
-           bands = rgb_image.split()
-           out = bands[color.value].point(lambda i: i * intensity )
-           bands[color.value].paste(out, None)
-           e_image = Image.merge('RGB', bands)
+           e_image = EnhanceImageColor(rgb_image, color, intensity)
            AddTextToImage(e_image, (int(gif_width * 0.1), int(gif_height * 0.9) ), "c={} i={}".format(color, intensity), 'yellow', 'left', font_object)
            images.append(e_image)
     first_image = images[0]
