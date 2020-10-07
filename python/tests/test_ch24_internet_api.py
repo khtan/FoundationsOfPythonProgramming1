@@ -237,7 +237,7 @@ def test_2414_bridesmaids():
 def test_2421_related_titles_disjoint():
     ml = get_related_titles(["Black Panther", "Captain Marvel"])
     logger.info(ml)
-    assert 10 == len(ml)
+    assert 9 == len(ml)
 
 def test_2421_related_titles_overlap():
     ml = get_related_titles(["Black Panther", "Thor: Ragnarok"])
