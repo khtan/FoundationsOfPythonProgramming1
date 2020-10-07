@@ -24,6 +24,9 @@ jobs:
   test_linux_typescript:
     docker:
       - image: circleci/node:10-browsers
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run:
@@ -45,6 +48,10 @@ jobs:
   test_linux_java:
     docker:
       - image: circleci/openjdk:jdk-stretch # cimg not yet available
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+
     steps: # mvn is in /opt/apache-maven/bin/mvn, current version 3.6.0
       - checkout
       - run:
@@ -60,6 +67,9 @@ jobs:
   test_linux_python:
     docker:
       - image: cimg/python:3.8
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - run:
@@ -81,6 +91,9 @@ jobs:
   test_linux_dotnet:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     <<: *test_dotnet
   test_windows_dotnet:
     executor:
@@ -91,17 +104,25 @@ workflows: # run jobs sequentially
   version: 2.1
   test_all_platforms:
      jobs:
-       - test_linux_typescript
+       - test_linux_typescript:
+           context:
+            - credentials
        - test_linux_java:
+           context:
+             - credentials
            requires:
              - test_linux_typescript
        - test_linux_dotnet:
+           context:
+             - credentials
            requires:
              - test_linux_java
        - test_windows_dotnet:
            requires:
              - test_linux_dotnet
        - test_linux_python:
+           context:
+             - credentials
            requires:
              - test_windows_dotnet
 
