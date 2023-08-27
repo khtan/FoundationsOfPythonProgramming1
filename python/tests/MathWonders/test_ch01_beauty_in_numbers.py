@@ -23,9 +23,15 @@ logger.addHandler(ch)
 # endregion helpers
 # region tests for xx.x
 def test_01_surprising_pattern():
-    for i in range(1, 10): # start=1, excludestop=10, range does not take parameter name
+    max = 20
+    for i in range(1, max): # start=1, excludestop=10, range does not take parameter name
         istr = str(1)*i
         inum = int(istr)
-        logger.info("{:>9} * {:9} = {:^18}".format(istr, istr, inum * inum))
+        fstr = "[:>{}] * [:{}] = [:{}]".format(max-1, max-1, max+max-2) # format string
+        fstr = fstr.replace('[', '{')
+        fstr = fstr.replace(']', '}')        
+        logger.info(fstr.format(istr, istr, inum * inum))        
+        # logger.info("{:>9} * {:9} = {:18}".format(istr, istr, inum * inum))
+
 
 # endregion tests

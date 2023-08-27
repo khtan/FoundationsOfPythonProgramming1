@@ -172,13 +172,13 @@ def test_2463_get(): # 24.6.3
 
     kval_pairs = {'rel_rhy': 'funny'}
     page = requests.get("https://api.datamuse.com/words", params=kval_pairs)
-    # Above equivalent to 
+    # Above equivalent to
     # page = requests.get("https://api.datamuse.com/words?rel_rhy=funny")
 
     logger.info(page.text[:150]) # print the first 150 characters
     logger.info(page.url) # print the url that was fetched
     eurl = "https://api.datamuse.com/words?rel_rhy=funny"
-    assert eurl == page.url    
+    assert eurl == page.url
 
 '''
 pytest.mark.skip(reason="No module called requests_with_caching")
