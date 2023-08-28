@@ -7,10 +7,10 @@ using FluentAssertions;
 
 namespace XUnitTests
 {
-    public class test_prime
+    public class Test_prime
     {
         private readonly ITestOutputHelper output; // helper provides interface for WriteLine only, so not logging per se
-        public test_prime(ITestOutputHelper output) { this.output = output; }
+        public Test_prime(ITestOutputHelper output) { this.output = output; }
         private IEnumerable<int> Primes(int upTo = 10000)
         {
             var ints = Enumerable.Range(2, upTo);
@@ -20,7 +20,7 @@ namespace XUnitTests
                               );
         }
         [Fact]
-        public void test_0000_two_ways_to_print_listOflist()
+        public void Test_0000_two_ways_to_print_listOflist()
         { // Instead of writing own extension, can consider JsonConvert
             var maxNum = 4;
             var ints = Enumerable.Range(2, maxNum);
@@ -37,7 +37,7 @@ namespace XUnitTests
             }
         }
         [Fact]
-        public void test_0001_manual_thoughtprocess()
+        public void Test_0001_manual_thoughtprocess()
         {   /*  Manually think and break the process into parts to see how data gets generated and processed
 
 Range(start=2,count=4) generates 2, 3, 4, 5
@@ -78,7 +78,7 @@ So, the !Any will return List of falses, ie 5, 3, 2
             output.WriteLine(primes.ToString("primes"));
         }// fact
         [Fact]
-        public void test_0002_log_pipeline()
+        public void Test_0002_log_pipeline()
         {
             var upTo = 4;
             var ints = Enumerable.Range(2, upTo);
@@ -105,7 +105,7 @@ So, the !Any will return List of falses, ie 5, 3, 2
             primes.Should().Equal(new List<int> { 2, 3, 5 });
         }// fact
         [Fact]
-        public void test_0003_log_pipeline()
+        public void Test_0003_log_pipeline()
         { /* Break the pipeline apart to see how data is assembled and process
              Transcript:
              Test Name:	XUnitTests.test_prime.test_0006_xxxx

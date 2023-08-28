@@ -11,12 +11,12 @@ namespace XUnitTests
 
     public class Program {
         private static string result;
-        public static void executeWithoutAwait(ITestOutputHelper output)
+        public static void ExecuteWithoutAwait(ITestOutputHelper output)
         {
             DoSomething(); // 1. not called with async 2. return not used
             output.WriteLine("executeWithoutAwait: result = {0}", result);
         }
-        public static async Task executeWithAwait(ITestOutputHelper output)
+        public static async Task ExecuteWithAwait(ITestOutputHelper output)
         {
             var s = await DoSomething(); // 1. not called with async 2. return not used
             output.WriteLine("executeWithAwait: result = {0}", result);
@@ -37,12 +37,12 @@ namespace XUnitTests
         [Fact]
         public void Test_withoutAwait()
         {
-            Program.executeWithoutAwait(this.output);
+            Program.ExecuteWithoutAwait(this.output);
         }
         [Fact]
         public async void Test_withAwait()
         {
-            await Program.executeWithAwait(this.output);
+            await Program.ExecuteWithAwait(this.output);
         }
     }
 }

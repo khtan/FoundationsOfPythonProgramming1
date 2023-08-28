@@ -149,7 +149,7 @@ namespace XUnitTests
         {
             var L1 = new List<int> { 3, 4, 5 };
             var L2 = new List<int> { 1, 2, 3 };
-            var L3 = L1.Zip(L2).Select(x => x.First + x.Second);
+            var L3 = L1.Zip(L2).Select(x => x.Item1 + x.Item2);
             var eL3 = new List<int> { 4, 6, 8 };
             L3.Should().Equal(eL3);
         }
@@ -158,7 +158,7 @@ namespace XUnitTests
         {
             var L1 = new List<int> { 3, 4, 5 };
             var L2 = new List<int> { 1, 2, 3 };
-            var L3 = from x in L1.Zip(L2) select x.First + x.Second;
+            var L3 = from x in L1.Zip(L2) select x.Item1 + x.Item2;
             var eL3 = new List<int> { 4, 6, 8 };
             L3.Should().Equal(eL3);
         }

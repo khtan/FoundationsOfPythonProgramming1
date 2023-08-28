@@ -32,11 +32,11 @@ namespace XUnitTests
           The Lookup class itself is the Enumerable<Item> while it has a method .Key
           Hence, outputing the Lookup will just produce a list of Enumerables, matching the problem spec output.
      */
-    public class test_problems
+    public class Test_problems
     {
 #region internal
         private readonly ITestOutputHelper output; // helper provides interface for WriteLine only, so not logging per se
-        public test_problems(ITestOutputHelper output) { this.output = output;  }
+        public Test_problems(ITestOutputHelper output) { this.output = output;  }
 #endregion internal
 #region helpers
         private string SortString(string word){
@@ -122,7 +122,7 @@ namespace XUnitTests
 #endregion testhelpers
 #region tests
         [Fact]
-        public void test_0001_empty_anagrams()
+        public void Test_0001_empty_anagrams()
         {
             var list = new List<string>();
             var dict = GenerateAnagramsSortString(list);
@@ -130,7 +130,7 @@ namespace XUnitTests
             dict.Should().BeEmpty();
         }
         [Fact]
-        public void test_0002_anagrams()
+        public void Test_0002_anagrams()
         {
             var list = new List<string> { "eat", "tea", "tan", "ate", "nat", "bat" };
             IDictionary<string, IEnumerable<string>> edict = new Dictionary<string, IEnumerable<string>>() // expected dictionary
@@ -142,7 +142,7 @@ namespace XUnitTests
             TestAnagrams(GenerateAnagramsSortString, list, edict);
         }// test
         [Fact]
-        public void test_0003_anagramsSortStringLinq()
+        public void Test_0003_anagramsSortStringLinq()
         {
             var list = new List<string> { "eat", "tea", "tan", "ate", "nat", "bat" };
             list.Reverse(); // Order to values in map will be different, but this does not matter as the test shows
@@ -155,7 +155,7 @@ namespace XUnitTests
             TestAnagrams(GenerateAnagramsSortStringLinq, list, edict);
         }// test
         [Fact]
-        public void test_0004_anagramsByLookup()
+        public void Test_0004_anagramsByLookup()
         {
             var list = new List<string> { "eat", "tea", "tan", "ate", "nat", "bat" };
             list.Reverse(); // Order to values in map will be different, but this does not matter
@@ -168,7 +168,7 @@ namespace XUnitTests
             TestAnagrams(GenerateAnagramsByLookup, list, edict);
         }// test
         [Fact]
-        public void test_0005_anagramsByGrouping()
+        public void Test_0005_anagramsByGrouping()
         {
             var list = new List<string> { "eat", "tea", "tan", "ate", "nat", "bat" };
             list.Reverse(); // Order to values in map will be different, but this does not matter
@@ -181,7 +181,7 @@ namespace XUnitTests
             TestAnagrams(GenerateAnagramsByGrouping, list, edict);
         }// test
         [Fact(Skip = "Manual test only")]
-        public void test_0005_ManualTestGenerateAnagramsC()
+        public void Test_0005_ManualTestGenerateAnagramsC()
         {
             var list = new List<string> { "eat", "tea", "tan", "ate", "nat", "bat" };
             var dict = GenerateAnagramsByGrouping(list);
