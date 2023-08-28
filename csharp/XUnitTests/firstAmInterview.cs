@@ -29,18 +29,18 @@ namespace XUnitTests
         }
     }
 
-    public class firstAmInterview
+    public class FirstAmInterview
     {
         private readonly ITestOutputHelper output; // helper provides interface for WriteLine only, so not logging per se
-        public firstAmInterview(ITestOutputHelper output) { this.output = output; }
+        public FirstAmInterview(ITestOutputHelper output) { this.output = output; }
 
         [Fact]
-        public void test_withoutAwait()
+        public void Test_withoutAwait()
         {
             Program.executeWithoutAwait(this.output);
         }
         [Fact]
-        public async void test_withAwait()
+        public async void Test_withAwait()
         {
             await Program.executeWithAwait(this.output);
         }

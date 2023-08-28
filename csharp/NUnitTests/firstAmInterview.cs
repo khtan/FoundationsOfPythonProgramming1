@@ -9,12 +9,12 @@ namespace tests
     public class Program
     {
         private static string result;
-        public static void executeWithoutAwait()
+        public static void ExecuteWithoutAwait()
         {
             DoSomething(); // 1. not called with async 2. return not used
             Console.WriteLine("executeWithoutAwait: result = {0}", result);
         }
-        public static async Task executeWithAwait()
+        public static async Task ExecuteWithAwait()
         {
             var s = await DoSomething(); // 1. not called with async 2. return not used
             Console.WriteLine("executeWithAwait: result = {0}", result);
@@ -27,17 +27,17 @@ namespace tests
         }
     }
 
-    public class firstAmInterview
+    public class FirstAmInterview
     {
         [Test]
-        public void test_withoutAwait()
+        public void Test_withoutAwait()
         {
-            Program.executeWithoutAwait();
+            Program.ExecuteWithoutAwait();
         }
         [Test]
-        public async Task test_withAwait()
+        public async Task Test_withAwait()
         {
-            await Program.executeWithAwait();
+            await Program.ExecuteWithAwait();
         }
     }
 }
