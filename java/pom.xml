@@ -12,7 +12,7 @@
     <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <hamcrest.version>2.1</hamcrest.version>
-      <jackson.version>2.10.5.1</jackson.version>
+      <jackson.version>2.12.7.1</jackson.version>
       <rest-assured.version>4.3.0</rest-assured.version>
       <junit.jupiter.version>5.5.2</junit.jupiter.version>
       <junit.platform.version>1.5.2</junit.platform.version>
