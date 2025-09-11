@@ -2,6 +2,23 @@
 ** startups
 //		#+STARTUP: hidestars	
 #+SEQ_TODO: TODO(t!) START(s!) STUCK(k!) WAIT(w!) | DONE(d!) CANCEL(c!) DEFER(r!) ANSWER(n!)
+* Setting up
+1. Switch to the project dir: cd <project>
+2. Create a new virtual environment called venv: python -m venv venv
+3. Activate the virtual environment (see tables below)
+4. Install packages: pip install -r requirements.txt
+
+*** activation
+Table shamelessly stolen from the venv docs.
+
+| Platform | Shell           | Command to activate virtual environment |
+| POSIX    | bash/zsh        | $ source ./venv/bin/activate            |
+|          | fish            | $ source ./venv/bin/activate.fish       |
+|          | csh/tcsh        | $ source ./venv/bin/activate.csh        |
+|          | PowerShell Core | $ ./venv/bin/Activate.ps1               |
+| Windows  | cmd.exe         | C:> .\venv\Scripts\activate.bat         |
+|          | PowerShell      | PS C:> .\venv\Scripts\Activate.ps1      |
+
 * 24.14 project - OMDB and TasteDive
 ** tastedive
  tastedive https://tastedive.com/read/api
