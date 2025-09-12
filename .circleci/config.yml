@@ -23,7 +23,7 @@ orbs:
 jobs:
   test_linux_typescript:
     docker:
-      - image: cimg/node:10-browsers
+      - image: cimg/node:lts-browsers
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
