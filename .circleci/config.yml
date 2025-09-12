@@ -19,11 +19,11 @@ test_dotnet: &test_dotnet
 # -----------
 version: 2.1
 orbs:
-   win: circleci/windows@2.2.0
+   win: cimg/windows@2.2.0
 jobs:
   test_linux_typescript:
     docker:
-      - image: circleci/node:10-browsers
+      - image: cimg/node:10-browsers
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
@@ -47,7 +47,7 @@ jobs:
           path: typescript/my-app/e2e/protractor-results
   test_linux_java:
     docker:
-      - image: circleci/openjdk:jdk-stretch # cimg not yet available
+      - image: cimg/openjdk:jdk-stretch # cimg not yet available
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
