@@ -19,7 +19,7 @@ test_dotnet: &test_dotnet
 # -----------
 version: 2.1
 orbs:
-   win: cimg/windows@2.2.0
+   win: circleci/windows@2.2.0
 jobs:
   test_linux_typescript:
     docker:
