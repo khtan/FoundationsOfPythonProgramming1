@@ -1,7 +1,9 @@
 """ Tests for TypedDict in Python 3.10+ """
 # region imports
+import os
 import sys
 import logging
+import json
 from typing import TypedDict
 
 # pylint: disable=W0105
@@ -30,7 +32,14 @@ class Person(TypedDict):
 # region helpers
 def log_person(user_data: Person) -> None:
     """ Print person details, function taking a Person type """
-    logger.info("Processing %s, who is %d years old.", user_data['name'], user_data['age'])  
+    logger.info("Processing %s, who is %d years old.", user_data['name'], user_data['age'])
+def load_json_file(file_path: str) -> Person:
+    """ Load a JSON file and return a Person TypedDict """
+    with open(file_path, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+        json_str = json.dumps(data)
+        user: Person = json.loads(json_str, object_hook=Person) # type: ignore
+    return user
 # endregion helpers
 # region tests for xx.x
 def test_01_person() -> None:
@@ -38,4 +47,13 @@ def test_01_person() -> None:
     user1: Person = {"name": "Alice", "age": 30, "email": "alice@example.com"}
     log_person(user1)
     assert user1["name"] == "Alice"
+def test_02_json() -> None:
+    """ Test creating and using a Person TypedDict from config file"""
+    config_file_name = "test_typeddict_config.txt"
+    base_dir = os.path.dirname(__file__)
+    config_file = os.path.join(base_dir, config_file_name)
+    user1: Person = load_json_file(config_file)
+    logger.info("Loaded user: %s", user1)
+    log_person(user1)
+    assert user1["name"] == "John"
 # endregion tests
