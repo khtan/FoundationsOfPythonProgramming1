@@ -6,6 +6,8 @@ import logging
 import json
 from typing import TypedDict
 
+import pytest
+
 # pylint: disable=W0105
 ''' Notes
 1. 
@@ -42,12 +44,12 @@ def load_json_file(file_path: str) -> Person:
     return user
 # endregion helpers
 # region tests for xx.x
-def test_01_person() -> None:
+def test_01_create_person() -> None:
     """ Test creating and using a Person TypedDict """
     user1: Person = {"name": "Alice", "age": 30, "email": "alice@example.com"}
     log_person(user1)
     assert user1["name"] == "Alice"
-def test_02_json() -> None:
+def test_02_read_config_file() -> None:
     """ Test creating and using a Person TypedDict from config file"""
     config_file_name = "test_typeddict_config.txt"
     base_dir = os.path.dirname(__file__)
@@ -56,4 +58,11 @@ def test_02_json() -> None:
     logger.info("Loaded user: %s", user1)
     log_person(user1)
     assert user1["name"] == "John"
+def test_03_exception_file_does_not_exist() -> None:
+    """ Test file-does-not-exist"""
+    config_file_name = "file_does_not_exist.txt"
+    base_dir = os.path.dirname(__file__)
+    config_file = os.path.join(base_dir, config_file_name)
+    with pytest.raises(FileNotFoundError):
+        unused_person: Person = load_json_file(config_file) # pylint: disable=W0612
 # endregion tests
