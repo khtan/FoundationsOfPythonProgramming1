@@ -26,6 +26,7 @@ def log_result(res: Result[int, str]) -> None:
         # 2Q: how to extract Ok value?
         # The following while in various documentation do not work:
         # cresult.ok_value cresult.unwrap(), cresult.default_value, cresult.value
+        # ok will throw if result is error, that is to let type checking work through
         # Found solution accidentally
         logger.info("Value is %d", res.ok)
     else:
