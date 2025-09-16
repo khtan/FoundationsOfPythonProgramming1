@@ -22,7 +22,8 @@ def even_only(n: int) -> Result[int, str]:
 def log_result(res: Result[int, str]) -> None:
     """ Log the Result """
     if res.is_ok():
-        # 1. Confirmed that after expression 2.2, the Result definition switched to T,Error instead of Error,T        
+        # 1. Confirmed that after expression 2.2, the Result definition switched
+        # to T,Error instead of Error,T
         # 2Q: how to extract Ok value?
         # The following while in various documentation do not work:
         # cresult.ok_value cresult.unwrap(), cresult.default_value, cresult.value
